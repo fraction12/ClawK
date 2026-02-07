@@ -44,6 +44,11 @@ ClawK (sounds like "clock" 🕐🦞) is a menu bar app that gives you real-time 
 
 ## Installation
 
+### Homebrew (recommended)
+```bash
+brew install --cask fraction12/tap/clawk
+```
+
 ### From Source
 ```bash
 git clone https://github.com/fraction12/ClawK.git
