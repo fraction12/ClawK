@@ -6,11 +6,16 @@ A native macOS companion app for [OpenClaw](https://github.com/openclaw/openclaw
 
 ## What is ClawK?
 
+![Mission Control](screenshots/mission-control.png)
+
 ClawK (sounds like "clock" 🕐🦞) is a menu bar app that gives you real-time visibility into your OpenClaw agent — sessions, heartbeats, memory, cron jobs, and more.
 
 ## Features
 
 ### 🎯 Mission Control
+
+![Mission Control](screenshots/mission-control.png)
+
 - **Active Sessions** — all running conversations with token counts, models, and last activity
 - **Active Subagents** — monitor background agent tasks in real-time
 - **Heartbeat Monitor** — timeline graph of agent health checks with status history
@@ -20,6 +25,10 @@ ClawK (sounds like "clock" 🕐🦞) is a menu bar app that gives you real-time 
 - **System Status** — gateway connection, uptime, version info
 
 ### 🧠 Memory Browser
+
+![Memory Browser](screenshots/memory-browse.png)
+![3D Visualization](screenshots/memory-3d-viz.png)
+
 - **File Browser** — navigate your agent's full memory tree with tiered storage (hot/warm/cold/archive)
 - **File Preview** — syntax-highlighted markdown preview with rendered output
 - **3D Visualization** — interactive 3D map of your memory embedding space (Three.js)
@@ -27,6 +36,9 @@ ClawK (sounds like "clock" 🕐🦞) is a menu bar app that gives you real-time 
 - **Memory Not Configured** — guided onboarding page if no memory system is detected, explaining setup steps and benefits
 
 ### 📊 Memory Vitals
+
+![Memory Vitals](screenshots/memory-vitals.png)
+
 - **Context Pressure** — monitor how full your agent's context window is with visual progress bars
 - **Memory Files Status** — file health, size, token counts, and staleness indicators
 - **Archive Health** — tier distribution and storage stats across hot/warm/cold/archive
@@ -34,11 +46,17 @@ ClawK (sounds like "clock" 🕐🦞) is a menu bar app that gives you real-time 
 - **Memory Activity** — recent memory searches, writes, and most active files
 
 ### 🖼️ Canvas
+
+![Canvas](screenshots/canvas.png)
+
 - **Canvas Status** — see if a canvas is currently presented, its URL, and dimensions
 - **Canvas Controls** — present URLs, hide canvas, take snapshots
 - **JavaScript Execution** — run JS code directly on the canvas with result display
 
 ### ⚙️ Settings
+
+![Settings](screenshots/settings.png)
+
 - **Gateway Configuration** — URL, token, connection status with live testing
 - **Auto-discovery** — finds your OpenClaw installation automatically
 - **Setup Wizard** — guided first-run experience with gateway token input and validation
