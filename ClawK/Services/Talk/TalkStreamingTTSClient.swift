@@ -124,21 +124,52 @@ class TalkStreamingTTSClient: ObservableObject {
         isProcessingQueue = true
         processingTask = Task { [weak self] in
             guard let self = self else { return }
+            var prefetchedAudio: Data? = nil
+            var prefetchSentence: String? = nil
+            
             while !Task.isCancelled && !self.stopRequested {
-                if self.sentenceQueue.isEmpty {
-                    if self.queueFinalized { break }
+                // Get current sentence + audio (from prefetch or fresh)
+                let sentence: String
+                let audioData: Data?
+                
+                if let prefetched = prefetchedAudio, let pSentence = prefetchSentence {
+                    sentence = pSentence
+                    audioData = prefetched
+                    prefetchedAudio = nil
+                    prefetchSentence = nil
+                } else if !self.sentenceQueue.isEmpty {
+                    sentence = self.sentenceQueue.removeFirst()
+                    audioData = await self.synthesizeSentence(sentence)
+                } else if self.queueFinalized {
+                    break
+                } else {
                     try? await Task.sleep(for: .milliseconds(50))
                     continue
                 }
-                let sentence = self.sentenceQueue.removeFirst()
-                let audioData = await self.synthesizeSentence(sentence)
+                
                 guard !Task.isCancelled && !self.stopRequested else { break }
+                
                 if let data = audioData, !data.isEmpty {
                     if !self.firstSentencePlayed {
                         self.firstSentencePlayed = true
                         self.onFirstSentencePlaying?()
                     }
+                    // Start prefetching next sentence while playing current
+                    let prefetchTask: Task<Data?, Never>? = {
+                        if !self.sentenceQueue.isEmpty {
+                            let next = self.sentenceQueue.removeFirst()
+                            prefetchSentence = next
+                            return Task { await self.synthesizeSentence(next) }
+                        }
+                        return nil
+                    }()
+                    
                     await self.playAudioDataAndWait(data)
+                    
+                    // Collect prefetch result
+                    if let task = prefetchTask {
+                        prefetchedAudio = await task.value
+                    }
                 } else {
                     logger.warning("TTS synthesis failed for sentence, using fallback speaker")
                     if !self.firstSentencePlayed {
