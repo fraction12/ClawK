@@ -23,8 +23,6 @@ targets:
         excludes:
           - "**/*.entitlements"
           - "**/Info.plist"
-          - "**/*.py"
-          - "**/requirements.txt"
           - "Tests/**"
     resources:
       - path: ClawK/Resources/tts_server.py

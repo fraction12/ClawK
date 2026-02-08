@@ -17,8 +17,8 @@ class TalkTTSServerManager {
     private var livenessTask: Task<Void, Never>?
 
     func start() {
-        if isPortInUse(8765) {
-            logger.info("Port 8765 already in use, assuming TTS server is running")
+        if isPortInUse(8766) {
+            logger.info("Port 8766 already in use, assuming TTS server is running")
             startLivenessChecks()
             return
         }
@@ -103,8 +103,9 @@ class TalkTTSServerManager {
     private func launchProcess() {
         let bundledPath = Bundle.main.resourceURL?.appendingPathComponent("tts_server.py").path
         let devPath = Bundle.main.bundlePath + "/../ClawK/Resources/tts_server.py"
+        let freeTalkPath = NSHomeDirectory() + "/Documents/Projects/FreeTalkMode/Server/tts_server.py"
 
-        guard let serverPath = [bundledPath, devPath].compactMap({ $0 }).first(where: { FileManager.default.fileExists(atPath: $0) }) else {
+        guard let serverPath = [bundledPath, devPath, freeTalkPath].compactMap({ $0 }).first(where: { FileManager.default.fileExists(atPath: $0) }) else {
             logger.error("Could not find tts_server.py")
             return
         }
@@ -132,7 +133,16 @@ class TalkTTSServerManager {
         proc.executableURL = URL(fileURLWithPath: pythonPath)
         proc.arguments = [serverPath]
         proc.standardOutput = FileHandle.nullDevice
-        proc.standardError = FileHandle.nullDevice
+        let stderrPipe = Pipe()
+        proc.standardError = stderrPipe
+        stderrPipe.fileHandleForReading.readabilityHandler = { handle in
+            let data = handle.availableData
+            if let str = String(data: data, encoding: .utf8), !str.isEmpty {
+                Task { @MainActor in
+                    Logger(subsystem: "ai.openclaw.clawk", category: "tts-server").error("TTS stderr: \(str, privacy: .public)")
+                }
+            }
+        }
 
         proc.terminationHandler = { [weak self] terminatedProcess in
             let status = terminatedProcess.terminationStatus
@@ -173,7 +183,7 @@ class TalkTTSServerManager {
                 try? await Task.sleep(for: .seconds(30))
                 guard !Task.isCancelled, let self = self else { return }
                 guard self.process != nil else { continue }
-                if !self.isPortInUse(8765) {
+                if !self.isPortInUse(8766) {
                     if let proc = self.process, !proc.isRunning, !self.hasRestarted {
                         logger.warning("TTS server liveness check failed, restarting")
                         self.hasRestarted = true

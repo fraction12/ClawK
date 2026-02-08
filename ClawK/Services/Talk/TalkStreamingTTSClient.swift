@@ -37,7 +37,7 @@ class TalkStreamingTTSClient: ObservableObject {
 
     private var firstSentencePlayed = false
 
-    init(ttsURL: String = "ws://localhost:8765") {
+    init(ttsURL: String = "ws://localhost:8766") {
         self.ttsURL = ttsURL
         engine.attach(playerNode)
         engine.connect(playerNode, to: engine.mainMixerNode, format: nil)

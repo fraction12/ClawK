@@ -537,7 +537,7 @@ struct TalkSettingsCard: View {
                                 .font(.ClawK.caption)
                                 .foregroundColor(.green)
                         }
-                    } else if conversationManager.ttsServerManager.isPortInUse(8765) {
+                    } else if conversationManager.ttsServerManager.isPortInUse(8766) {
                         HStack(spacing: 4) {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundColor(.green)

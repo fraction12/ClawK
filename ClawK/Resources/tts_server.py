@@ -12,8 +12,8 @@ import edge_tts
 import websockets
 
 DEFAULT_VOICE = os.environ.get("EDGE_TTS_VOICE", "en-GB-RyanNeural")
-HOST = "localhost"
-PORT = 8765
+HOST = "127.0.0.1"
+PORT = int(os.environ.get("TTS_PORT", "8766"))
 
 # --- Limits (#29, #31) ---
 MAX_TEXT_LENGTH = 5000

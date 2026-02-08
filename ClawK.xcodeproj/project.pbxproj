@@ -10,9 +10,11 @@
 		061D17BC7C20BDDF80ADBE81 /* SentenceExtractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F2883250C73DB6D9DC059 /* SentenceExtractionTests.swift */; };
 		09991ADB0148F1F0A6B9B535 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D204294AB51DFD3879B32AF9 /* Carbon.framework */; };
 		0BFD1E81CB3A2258E36A594F /* MemorySearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AF8ECC4BD0BF9BDD969F1 /* MemorySearchResultsView.swift */; };
+		0CAE96554D447A474EF72091 /* tts_server.py in Resources */ = {isa = PBXBuildFile; fileRef = C12169C21ABAC9710FF9556A /* tts_server.py */; };
 		12CF7F32E9E77E79A0B79E6B /* MemoryBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E2DCBBFE6A43D359343042 /* MemoryBrowserView.swift */; };
 		16ECEA42D059271E0D5750F3 /* TalkStreamingTTSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD49A15A58DC66C5261A4C2 /* TalkStreamingTTSClient.swift */; };
 		176CC2009B50D09FAA9DF6C5 /* ConnectionStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62AB001E0A08CFB0C92DB7 /* ConnectionStatusBanner.swift */; };
+		1A927E8076C1FA3948183426 /* requirements.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2C936A35042A11351EDEAD26 /* requirements.txt */; };
 		1BD854B84ADAD5BC1286135D /* HeartbeatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163EC6AA9EB9D85222DE0A7F /* HeartbeatModels.swift */; };
 		1C70A3ABDF87244012677679 /* NaturalLanguage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F27E165E19FF606786D550 /* NaturalLanguage.framework */; };
 		1C8BAB93399A8D4514668944 /* TalkTTSServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C35054C4F22C00CCF474003 /* TalkTTSServerManager.swift */; };
@@ -98,6 +100,7 @@
 		261564BD1A48893BBC4A3358 /* DSCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCard.swift; sourceTree = "<group>"; };
 		2844C856BB2CB85D3B369AA0 /* GatewayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayConfig.swift; sourceTree = "<group>"; };
 		2B64F217E6157EA8B1371A8D /* DSStatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSStatusBadge.swift; sourceTree = "<group>"; };
+		2C936A35042A11351EDEAD26 /* requirements.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
 		2DBD85F48466DB32188CD4CD /* TalkSoundEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkSoundEffects.swift; sourceTree = "<group>"; };
 		2E43570A6A682E5BE5900C5B /* ModelInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInfo.swift; sourceTree = "<group>"; };
 		33154B1786F7B08706E33E3B /* DSHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSHeader.swift; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 		B39E3F7DD1892F9F9A5DD774 /* MemoryVitalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryVitalsView.swift; sourceTree = "<group>"; };
 		B775F5479A6C9F0B33CA17A3 /* TalkStateIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkStateIndicator.swift; sourceTree = "<group>"; };
 		BEAC123E4B2735E1C92F6D80 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C12169C21ABAC9710FF9556A /* tts_server.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = tts_server.py; sourceTree = "<group>"; };
 		C15E6F177A0F2A22712CF625 /* DSListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSListItem.swift; sourceTree = "<group>"; };
 		C683FF4B4A33DFC61FDBAFCD /* MemoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryService.swift; sourceTree = "<group>"; };
 		C6E60043AAB346DA76314735 /* SessionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionInfo.swift; sourceTree = "<group>"; };
@@ -286,6 +290,15 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		885F1B42422536B2AC742C76 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2C936A35042A11351EDEAD26 /* requirements.txt */,
+				C12169C21ABAC9710FF9556A /* tts_server.py */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		8CBD55EF3C82DF5FA99C4E80 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +359,7 @@
 				4042032AB85E73D81E7D80E3 /* DesignSystem */,
 				29A0EF4B42BF42F66646D45B /* MenuBar */,
 				9217352333E615E9A50F29B0 /* Models */,
+				885F1B42422536B2AC742C76 /* Resources */,
 				C444984727C3589D1DDFE648 /* Services */,
 				86BBD6EAD254DD49B12C96EE /* ViewModels */,
 				6540727AA7D377FB755CB19F /* Views */,
@@ -472,6 +486,8 @@
 			files = (
 				1F4A0ED045993549EF5C10FC /* Assets.xcassets in Resources */,
 				75E1C91C941FC58C542F871D /* README.md in Resources */,
+				1A927E8076C1FA3948183426 /* requirements.txt in Resources */,
+				0CAE96554D447A474EF72091 /* tts_server.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -62,7 +62,7 @@ class TalkConversationManager: ObservableObject {
         self.gatewayWebSocket = GatewayWebSocket()
 
         // Initialize TTS client
-        let ttsURL = UserDefaults.standard.string(forKey: "talkTTSServerURL") ?? "ws://localhost:8765"
+        let ttsURL = UserDefaults.standard.string(forKey: "talkTTSServerURL") ?? "ws://localhost:8766"
         self.ttsClient = TalkStreamingTTSClient(ttsURL: ttsURL)
 
         TalkSoundEffects.shared.enabled = soundEffectsEnabled
@@ -74,8 +74,7 @@ class TalkConversationManager: ObservableObject {
         // Connect to gateway eagerly so status shows "Connected" immediately
         gatewayWebSocket.connect()
         
-        // Start TTS server at init
-        startTTSServer()
+        // TTS server started from ClawKApp.swift after init completes — do NOT start here to avoid double launch
     }
 
     // MARK: - Setup
