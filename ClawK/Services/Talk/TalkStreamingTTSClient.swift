@@ -2,7 +2,7 @@
 //  TalkStreamingTTSClient.swift
 //  ClawK
 //
-//  Streaming TTS client with persistent WebSocket and sentence queue
+//  Streaming TTS client with incremental MP3 decode and buffer scheduling
 //
 
 import AppKit
@@ -37,6 +37,12 @@ class TalkStreamingTTSClient: ObservableObject {
 
     private var firstSentencePlayed = false
 
+    /// Track total scheduled buffers and completed buffers to know when done
+    private var scheduledBufferCount = 0
+    private var completedBufferCount = 0
+    /// Continuation to signal when all buffers for all sentences have finished playing
+    private var allDoneContinuation: CheckedContinuation<Void, Never>?
+
     init(ttsURL: String = "ws://localhost:8766") {
         self.ttsURL = ttsURL
         engine.attach(playerNode)
@@ -65,8 +71,6 @@ class TalkStreamingTTSClient: ObservableObject {
         let task = session.webSocketTask(with: url)
         self.webSocket = task
         task.resume()
-        // Bug 10 fix: Don't set isConnected until first successful response
-        // isConnected will be set in synthesizeSentenceInternal on first data receipt
         logger.info("TTS WebSocket connecting to \(self.ttsURL, privacy: .public)")
     }
 
@@ -104,6 +108,10 @@ class TalkStreamingTTSClient: ObservableObject {
         queueFinalized = false
         firstSentencePlayed = false
         isPlaying = false
+        scheduledBufferCount = 0
+        completedBufferCount = 0
+        allDoneContinuation?.resume()
+        allDoneContinuation = nil
         logger.info("TTS playback stopped")
     }
 
@@ -112,6 +120,8 @@ class TalkStreamingTTSClient: ObservableObject {
         stopRequested = false
         firstSentencePlayed = false
         queueFinalized = false
+        scheduledBufferCount = 0
+        completedBufferCount = 0
         ensureConnected()
     }
 
@@ -120,65 +130,61 @@ class TalkStreamingTTSClient: ObservableObject {
         disconnectWebSocket()
     }
 
+    // MARK: - Streaming Queue Processing
+
     private func startProcessingQueue() {
         isProcessingQueue = true
         processingTask = Task { [weak self] in
             guard let self = self else { return }
-            var prefetchedAudio: Data? = nil
-            var prefetchSentence: String? = nil
-            
+
+            // Ensure engine is running
+            if !self.engine.isRunning {
+                do {
+                    try self.engine.start()
+                } catch {
+                    logger.error("Failed to start audio engine: \(error.localizedDescription, privacy: .public)")
+                    self.isProcessingQueue = false
+                    self.onPlaybackFinished?()
+                    return
+                }
+            }
+            self.playerNode.play()
+            self.isPlaying = true
+
             while !Task.isCancelled && !self.stopRequested {
-                // Get current sentence + audio (from prefetch or fresh)
-                let sentence: String
-                let audioData: Data?
-                
-                if let prefetched = prefetchedAudio, let pSentence = prefetchSentence {
-                    sentence = pSentence
-                    audioData = prefetched
-                    prefetchedAudio = nil
-                    prefetchSentence = nil
-                } else if !self.sentenceQueue.isEmpty {
-                    sentence = self.sentenceQueue.removeFirst()
-                    audioData = await self.synthesizeSentence(sentence)
+                if !self.sentenceQueue.isEmpty {
+                    let sentence = self.sentenceQueue.removeFirst()
+                    let success = await self.streamSentence(sentence)
+                    if !success && !self.stopRequested {
+                        // Fallback
+                        if !self.firstSentencePlayed {
+                            self.firstSentencePlayed = true
+                            self.onFirstSentencePlaying?()
+                        }
+                        await self.speakFallback(sentence)
+                    }
                 } else if self.queueFinalized {
                     break
                 } else {
                     try? await Task.sleep(for: .milliseconds(50))
                     continue
                 }
-                
-                guard !Task.isCancelled && !self.stopRequested else { break }
-                
-                if let data = audioData, !data.isEmpty {
-                    if !self.firstSentencePlayed {
-                        self.firstSentencePlayed = true
-                        self.onFirstSentencePlaying?()
+            }
+
+            guard !self.stopRequested else { return }
+
+            // Wait for all scheduled buffers to finish playing
+            if self.scheduledBufferCount > self.completedBufferCount {
+                await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                    self.allDoneContinuation = continuation
+                    // Check again in case they all completed while we were setting up
+                    if self.scheduledBufferCount <= self.completedBufferCount || self.stopRequested {
+                        self.allDoneContinuation = nil
+                        continuation.resume()
                     }
-                    // Start prefetching next sentence while playing current
-                    let prefetchTask: Task<Data?, Never>? = {
-                        if !self.sentenceQueue.isEmpty {
-                            let next = self.sentenceQueue.removeFirst()
-                            prefetchSentence = next
-                            return Task { await self.synthesizeSentence(next) }
-                        }
-                        return nil
-                    }()
-                    
-                    await self.playAudioDataAndWait(data)
-                    
-                    // Collect prefetch result
-                    if let task = prefetchTask {
-                        prefetchedAudio = await task.value
-                    }
-                } else {
-                    logger.warning("TTS synthesis failed for sentence, using fallback speaker")
-                    if !self.firstSentencePlayed {
-                        self.firstSentencePlayed = true
-                        self.onFirstSentencePlaying?()
-                    }
-                    await self.speakFallback(sentence)
                 }
             }
+
             guard !self.stopRequested else { return }
             self.isProcessingQueue = false
             self.isPlaying = false
@@ -187,74 +193,131 @@ class TalkStreamingTTSClient: ObservableObject {
         }
     }
 
-    private func synthesizeSentence(_ text: String) async -> Data? {
-        return await withTaskGroup(of: Data?.self) { group in
-            group.addTask { await self.synthesizeSentenceInternal(text) }
-            group.addTask { try? await Task.sleep(for: .seconds(30)); return nil }
-            if let result = await group.next() {
-                group.cancelAll()
-                if let data = result { return data }
-                if let secondResult = await group.next() { return secondResult }
-                return nil
-            }
-            return nil
-        }
-    }
+    // MARK: - Stream a single sentence incrementally
 
-    private func synthesizeSentenceInternal(_ text: String) async -> Data? {
+    /// Streams MP3 chunks from WebSocket, decodes incrementally, schedules PCM buffers on playerNode.
+    /// Returns true if at least some audio was scheduled, false on total failure.
+    private func streamSentence(_ text: String) async -> Bool {
         ensureConnected()
-        guard let ws = webSocket else { return nil }
-        var audioData = Data()
+        guard let ws = webSocket else { return false }
+
+        let tempURL = URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent("clawk-tts-\(UUID().uuidString).mp3")
+        var accumulatedData = Data()
+        var framesAlreadyScheduled: AVAudioFramePosition = 0
+        var anyAudioScheduled = false
+        // Decode every N chunks to amortize overhead
+        let decodeInterval = 3
+        var chunksSinceLastDecode = 0
+
+        func decodeAndScheduleNewFrames() {
+            guard !accumulatedData.isEmpty else { return }
+            do {
+                try accumulatedData.write(to: tempURL)
+                let file = try AVAudioFile(forReading: tempURL)
+                let totalFrames = file.length
+                let newFrames = totalFrames - framesAlreadyScheduled
+                guard newFrames > 0 else { return }
+
+                file.framePosition = framesAlreadyScheduled
+                let format = file.processingFormat
+
+                // Reconnect playerNode if format changed (first time)
+                if !anyAudioScheduled {
+                    self.engine.connect(self.playerNode, to: self.engine.mainMixerNode, format: format)
+                    if !self.engine.isRunning {
+                        try self.engine.start()
+                    }
+                    if !self.playerNode.isPlaying {
+                        self.playerNode.play()
+                    }
+                }
+
+                guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(newFrames)) else { return }
+                try file.read(into: buffer)
+
+                self.scheduledBufferCount += 1
+                let bufferIndex = self.scheduledBufferCount
+                nonisolated(unsafe) let unsafeSelf = self
+                self.playerNode.scheduleBuffer(buffer) {
+                    DispatchQueue.main.async {
+                        unsafeSelf.completedBufferCount += 1
+                        if unsafeSelf.completedBufferCount >= unsafeSelf.scheduledBufferCount {
+                            unsafeSelf.allDoneContinuation?.resume()
+                            unsafeSelf.allDoneContinuation = nil
+                        }
+                    }
+                }
+
+                framesAlreadyScheduled = totalFrames
+                anyAudioScheduled = true
+
+                if !self.firstSentencePlayed {
+                    self.firstSentencePlayed = true
+                    self.onFirstSentencePlaying?()
+                }
+            } catch {
+                // Partial MP3 may not be decodable yet — that's OK, we'll try again with more data
+                logger.debug("Incremental decode attempt: \(error.localizedDescription, privacy: .public)")
+            }
+        }
+
         do {
             try await ws.send(.string(text))
-            while true {
+
+            while !Task.isCancelled && !stopRequested {
                 let message = try await ws.receive()
-                // Bug 10 fix: Mark connected on first successful receive
                 if !isConnected { isConnected = true }
+
                 switch message {
                 case .data(let chunk):
-                    if chunk == Data("END".utf8) { return audioData }
-                    audioData.append(chunk)
+                    if chunk == Data("END".utf8) {
+                        // Final decode pass
+                        decodeAndScheduleNewFrames()
+                        cleanup()
+                        return anyAudioScheduled
+                    }
+                    accumulatedData.append(chunk)
+                    chunksSinceLastDecode += 1
+                    if chunksSinceLastDecode >= decodeInterval {
+                        chunksSinceLastDecode = 0
+                        decodeAndScheduleNewFrames()
+                    }
                 case .string(let str):
-                    if str == "END" { return audioData }
+                    if str == "END" {
+                        decodeAndScheduleNewFrames()
+                        cleanup()
+                        return anyAudioScheduled
+                    }
                     if let data = str.data(using: .utf8),
                        let json = try? JSONDecoder().decode([String: String].self, from: data),
                        json["error"] != nil {
                         logger.error("TTS server returned error for sentence")
-                        return nil
+                        cleanup()
+                        return false
                     }
                 @unknown default:
                     break
                 }
             }
         } catch {
-            logger.warning("TTS connection error, reconnecting: \(error.localizedDescription, privacy: .public)")
+            logger.warning("TTS connection error: \(error.localizedDescription, privacy: .public)")
+            cleanup()
+            // Reconnect for next sentence
             disconnectWebSocket()
             ensureConnected()
-            guard let retryWs = webSocket else { return nil }
-            do {
-                audioData = Data()
-                try await retryWs.send(.string(text))
-                while true {
-                    let message = try await retryWs.receive()
-                    if !isConnected { isConnected = true }
-                    switch message {
-                    case .data(let chunk):
-                        if chunk == Data("END".utf8) { return audioData }
-                        audioData.append(chunk)
-                    case .string(let str):
-                        if str == "END" { return audioData }
-                    @unknown default:
-                        break
-                    }
-                }
-            } catch {
-                logger.error("TTS retry failed: \(error.localizedDescription, privacy: .public)")
-                disconnectWebSocket()
-                return nil
-            }
+            return anyAudioScheduled
         }
+
+        func cleanup() {
+            try? FileManager.default.removeItem(at: tempURL)
+        }
+
+        cleanup()
+        return anyAudioScheduled
     }
+
+    // MARK: - Fallback
 
     private func speakFallback(_ text: String) async {
         fallbackSpeaker.setVoice(NSSpeechSynthesizer.defaultVoice)
@@ -266,43 +329,6 @@ class TalkStreamingTTSClient: ObservableObject {
                 return
             }
             try? await Task.sleep(for: .milliseconds(100))
-        }
-    }
-
-    private func playAudioDataAndWait(_ data: Data) async {
-        let tempURL = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent("clawk-tts-\(UUID().uuidString).mp3")
-        do {
-            try data.write(to: tempURL)
-            let file = try AVAudioFile(forReading: tempURL)
-            let format = file.processingFormat
-            let frameCount = UInt32(file.length)
-            guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
-                try? FileManager.default.removeItem(at: tempURL)
-                return
-            }
-            try file.read(into: buffer)
-            if !engine.isRunning {
-                engine.connect(playerNode, to: engine.mainMixerNode, format: format)
-                try engine.start()
-            }
-            isPlaying = true
-            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-                nonisolated(unsafe) var hasResumed = false
-                playerNode.scheduleBuffer(buffer) {
-                    guard !hasResumed else { return }
-                    hasResumed = true
-                    DispatchQueue.global(qos: .utility).async {
-                        try? FileManager.default.removeItem(at: tempURL)
-                    }
-                    continuation.resume()
-                }
-                playerNode.play()
-            }
-        } catch {
-            logger.error("Failed to play audio data: \(error.localizedDescription, privacy: .public)")
-            isPlaying = false
-            try? FileManager.default.removeItem(at: tempURL)
         }
     }
 }
