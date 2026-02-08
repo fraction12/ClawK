@@ -104,6 +104,7 @@ class TalkStreamingTTSClient: ObservableObject {
         queueFinalized = false
         firstSentencePlayed = false
         isPlaying = false
+        engineFormat = nil
         logger.info("TTS playback stopped")
     }
 
@@ -269,6 +270,8 @@ class TalkStreamingTTSClient: ObservableObject {
         }
     }
 
+    private var engineFormat: AVAudioFormat?
+
     private func playAudioDataAndWait(_ data: Data) async {
         let tempURL = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("clawk-tts-\(UUID().uuidString).mp3")
@@ -282,22 +285,23 @@ class TalkStreamingTTSClient: ObservableObject {
                 return
             }
             try file.read(into: buffer)
-            if !engine.isRunning {
+            // Keep engine running between sentences — only restart if format changes
+            if !engine.isRunning || engineFormat != format {
+                if engine.isRunning { engine.stop() }
                 engine.connect(playerNode, to: engine.mainMixerNode, format: format)
                 try engine.start()
+                engineFormat = format
             }
             isPlaying = true
-            // Bug 11 fix: Guard against double-resume when stopPlayback cancels the task
-            // while the scheduleBuffer completion fires simultaneously
             await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
                 nonisolated(unsafe) var hasResumed = false
                 playerNode.scheduleBuffer(buffer) {
-                    Task { @MainActor in
+                    guard !hasResumed else { return }
+                    hasResumed = true
+                    DispatchQueue.global(qos: .utility).async {
                         try? FileManager.default.removeItem(at: tempURL)
-                        guard !hasResumed else { return }
-                        hasResumed = true
-                        continuation.resume()
                     }
+                    continuation.resume()
                 }
                 playerNode.play()
             }
