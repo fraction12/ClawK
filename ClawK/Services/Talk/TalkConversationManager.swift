@@ -95,7 +95,12 @@ class TalkConversationManager: ObservableObject {
 
     private func setupAudioLevelForwarding() {
         audioEngine.onAudioLevel = { [weak self] rms in
-            self?.voiceActivityDetector.feedAudioLevel(rms)
+            guard let self = self else { return }
+            // Bug 12 fix: Suppress VAD while TTS is playing to prevent speaker echo
+            // from being misdetected as user speech (kills remaining sentence queue).
+            // Users can still interrupt between sentences during synthesis gaps.
+            guard !self.ttsClient.isPlaying else { return }
+            self.voiceActivityDetector.feedAudioLevel(rms)
         }
     }
 
