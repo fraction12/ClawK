@@ -51,6 +51,8 @@ class TalkStreamingTTSClient: ObservableObject {
         engine.attach(playerNode)
         engine.connect(playerNode, to: engine.mainMixerNode, format: nil)
         Self.cleanupStaleTempFiles()
+        // Pre-warm WebSocket so it's ready when first sentence arrives
+        ensureConnected()
     }
 
     static func cleanupStaleTempFiles() {
@@ -76,10 +78,10 @@ class TalkStreamingTTSClient: ObservableObject {
     }
 
     /// Wait for WebSocket handshake to complete.
-    /// URLSessionWebSocketTask.send() will queue until handshake finishes,
-    /// but we give a brief pause to let the TCP + HTTP upgrade complete.
     private func waitForConnection() async {
-        try? await Task.sleep(for: .milliseconds(300))
+        if isConnected { return }
+        // Give TCP + HTTP upgrade time to complete
+        try? await Task.sleep(for: .milliseconds(150))
     }
 
     private func disconnectWebSocket() {
@@ -228,7 +230,7 @@ class TalkStreamingTTSClient: ObservableObject {
         var framesAlreadyScheduled: AVAudioFramePosition = 0
         var anyAudioScheduled = false
         // Decode every N chunks to amortize overhead
-        let decodeInterval = 3
+        let decodeInterval = 2
         var chunksSinceLastDecode = 0
 
         func decodeAndScheduleNewFrames() {
