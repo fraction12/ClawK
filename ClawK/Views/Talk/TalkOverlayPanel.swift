@@ -120,8 +120,11 @@ struct TalkOverlayContentView: View {
                     .padding(.horizontal, Spacing.xl)
             }
 
-            // Claude response
-            if !conversationManager.claudeResponse.isEmpty {
+            // Claude response — Bug 8 fix: only show during thinking/speaking
+            if !conversationManager.claudeResponse.isEmpty
+                && (conversationManager.state == .thinking
+                    || conversationManager.state == .speaking)
+            {
                 Text(conversationManager.claudeResponse)
                     .font(.ClawK.body)
                     .padding(Spacing.md)

@@ -78,6 +78,8 @@ class GatewayWebSocket: ObservableObject {
     }
 
     func connect() {
+        // Bug 9 fix: Re-enable auto-reconnect when user initiates a connection
+        autoReconnectEnabled = true
         reconnectTask?.cancel()
         reconnectTask = nil
         connectionState = .connecting

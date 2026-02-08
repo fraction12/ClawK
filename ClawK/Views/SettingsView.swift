@@ -462,7 +462,7 @@ struct AboutCard: View {
 // MARK: - Talk Settings Card
 
 struct TalkSettingsCard: View {
-    @StateObject private var conversationManager = TalkConversationManager()
+    @ObservedObject private var conversationManager = TalkConversationManager.shared
 
     var body: some View {
         DSCard(

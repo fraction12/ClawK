@@ -43,7 +43,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var appState: AppState?
     var welcomeWindow: NSWindow?
     var talkOverlayPanel: TalkOverlayPanel?
-    var talkConversationManager: TalkConversationManager?
     private var hotkeyRef: EventHotKeyRef?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -111,9 +110,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // Start polling
             state.startPolling()
 
-            // Initialize Talk Mode
-            let talkManager = TalkConversationManager()
-            self.talkConversationManager = talkManager
+            // Initialize Talk Mode — start TTS server at app launch (Bug 1 + 4)
+            TalkConversationManager.shared.startTTSServer()
 
             // Register global hotkey (Option+Space)
             self.registerTalkHotkey()
@@ -152,10 +150,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if talkOverlayPanel == nil {
             let panel = TalkOverlayPanel()
-            let talkManager = talkConversationManager ?? TalkConversationManager()
-            self.talkConversationManager = talkManager
-
-            let contentView = TalkOverlayContentView(conversationManager: talkManager)
+            let contentView = TalkOverlayContentView(conversationManager: TalkConversationManager.shared)
             panel.contentViewController = NSHostingController(rootView: contentView)
             self.talkOverlayPanel = panel
         }
@@ -194,7 +189,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         appState?.flushHeartbeatHistory()
         appState?.stopPolling()
-        talkConversationManager?.stopTTSServer()
+        TalkConversationManager.shared.stopTTSServer()
         if let ref = hotkeyRef {
             UnregisterEventHotKey(ref)
         }

@@ -65,8 +65,9 @@ class TalkStreamingTTSClient: ObservableObject {
         let task = session.webSocketTask(with: url)
         self.webSocket = task
         task.resume()
-        isConnected = true
-        logger.info("TTS WebSocket connected to \(self.ttsURL, privacy: .public)")
+        // Bug 10 fix: Don't set isConnected until first successful response
+        // isConnected will be set in synthesizeSentenceInternal on first data receipt
+        logger.info("TTS WebSocket connecting to \(self.ttsURL, privacy: .public)")
     }
 
     private func disconnectWebSocket() {
@@ -177,6 +178,8 @@ class TalkStreamingTTSClient: ObservableObject {
             try await ws.send(.string(text))
             while true {
                 let message = try await ws.receive()
+                // Bug 10 fix: Mark connected on first successful receive
+                if !isConnected { isConnected = true }
                 switch message {
                 case .data(let chunk):
                     if chunk == Data("END".utf8) { return audioData }
@@ -203,6 +206,7 @@ class TalkStreamingTTSClient: ObservableObject {
                 try await retryWs.send(.string(text))
                 while true {
                     let message = try await retryWs.receive()
+                    if !isConnected { isConnected = true }
                     switch message {
                     case .data(let chunk):
                         if chunk == Data("END".utf8) { return audioData }
@@ -252,10 +256,15 @@ class TalkStreamingTTSClient: ObservableObject {
                 try engine.start()
             }
             isPlaying = true
+            // Bug 11 fix: Guard against double-resume when stopPlayback cancels the task
+            // while the scheduleBuffer completion fires simultaneously
             await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                nonisolated(unsafe) var hasResumed = false
                 playerNode.scheduleBuffer(buffer) {
                     Task { @MainActor in
                         try? FileManager.default.removeItem(at: tempURL)
+                        guard !hasResumed else { return }
+                        hasResumed = true
                         continuation.resume()
                     }
                 }

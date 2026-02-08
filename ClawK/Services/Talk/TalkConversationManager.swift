@@ -13,6 +13,9 @@ private let logger = Logger(subsystem: "ai.openclaw.clawk", category: "talk-conv
 
 @MainActor
 class TalkConversationManager: ObservableObject {
+    /// Single shared instance — used by TalkView, SettingsView, and overlay panel
+    static let shared = TalkConversationManager()
+
     @Published var state: TalkConversationState = .idle
     @Published var userTranscript: String = ""
     @Published var claudeResponse: String = ""
@@ -32,6 +35,7 @@ class TalkConversationManager: ObservableObject {
     private var lastSpokenIndex: String.Index?
     private var lastEnqueuedSentence: String?
     private var thinkingTimeoutTask: Task<Void, Never>?
+    private var streamingTimeoutTask: Task<Void, Never>?
 
     /// Talk Mode settings from UserDefaults
     @Published var soundEffectsEnabled: Bool {
@@ -47,7 +51,7 @@ class TalkConversationManager: ObservableObject {
         didSet { UserDefaults.standard.set(interruptOnSpeech, forKey: "talkInterruptOnSpeech") }
     }
 
-    init() {
+    private init() {
         // Load settings from UserDefaults
         let storedSilence = UserDefaults.standard.double(forKey: "talkSilenceThreshold")
         self.silenceThreshold = storedSilence > 0 ? storedSilence : 1.5
@@ -74,8 +78,11 @@ class TalkConversationManager: ObservableObject {
         voiceActivityDetector.onSpeechDetected = { [weak self] in
             Task { @MainActor [weak self] in
                 guard let self = self, self.state == .speaking else { return }
+                // Bug 3 fix: Clean up speaking state fully before starting listening
+                self.voiceActivityDetector.stopMonitoring()
                 self.audioEngine.stop()
                 self.ttsClient.stopPlayback()
+                self.transition(to: .idle)
                 self.startListening()
             }
         }
@@ -103,7 +110,9 @@ class TalkConversationManager: ObservableObject {
         ttsClient.onPlaybackFinished = { [weak self] in
             Task { @MainActor [weak self] in
                 guard let self = self else { return }
-                if self.state == .thinking || self.state == .speaking {
+                // Bug 2 fix: Only transition to idle from .speaking, not from .thinking
+                // (during .thinking, response may still be streaming)
+                if self.state == .speaking {
                     self.transition(to: .idle)
                 }
             }
@@ -133,7 +142,12 @@ class TalkConversationManager: ObservableObject {
         case .listening:
             stopListening()
         case .speaking:
+            // Bug 3 fix: Stop VAD monitoring and audio engine before starting listening
+            // to avoid "tap already installed" crash
+            voiceActivityDetector.stopMonitoring()
+            audioEngine.stop()
             ttsClient.stopPlayback()
+            transition(to: .idle)
             startListening()
         case .thinking:
             break
@@ -233,7 +247,13 @@ class TalkConversationManager: ObservableObject {
     private func handleResponseChunk(content: String, done: Bool) {
         claudeResponse = content
 
+        // Bug 7 fix: Reset streaming timeout on every chunk
+        resetStreamingTimeout()
+
         if done {
+            streamingTimeoutTask?.cancel()
+            streamingTimeoutTask = nil
+
             messages.append(TalkChatMessage(role: .assistant, text: content))
             trimHistory()
             saveHistory()
@@ -251,6 +271,21 @@ class TalkConversationManager: ObservableObject {
             }
         } else {
             extractAndEnqueueSentences(from: content)
+        }
+    }
+
+    /// Bug 7: If no streaming chunk received within 30s, assume agent crashed
+    private func resetStreamingTimeout() {
+        streamingTimeoutTask?.cancel()
+        streamingTimeoutTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(30))
+            guard !Task.isCancelled else { return }
+            guard let self = self, self.state == .thinking || self.state == .speaking else { return }
+            logger.warning("Streaming timed out — no data for 30s")
+            self.errorMessage = "Streaming timed out"
+            self.ttsClient.stopPlayback()
+            self.transition(to: .idle)
+            TalkSoundEffects.shared.playError()
         }
     }
 

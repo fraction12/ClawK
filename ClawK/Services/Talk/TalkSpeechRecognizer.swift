@@ -20,6 +20,8 @@ class TalkSpeechRecognizer: ObservableObject {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private var silenceTimer: Timer?
+    /// Bug 12 fix: Prevents both silence timer and isFinal from double-firing
+    private var hasHandledFinal = false
 
     var silenceThreshold: TimeInterval = 1.5
     var onSilenceDetected: ((String) -> Void)?
@@ -34,6 +36,7 @@ class TalkSpeechRecognizer: ObservableObject {
 
     func startRecognition(audioEngine: TalkAudioEngine) throws {
         stopRecognition()
+        hasHandledFinal = false
 
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
@@ -86,8 +89,11 @@ class TalkSpeechRecognizer: ObservableObject {
     }
 
     private func handleFinalResult() {
+        // Bug 12 fix: Prevent double-firing from both silence timer and isFinal
+        guard !hasHandledFinal else { return }
         let text = transcript.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
+        hasHandledFinal = true
         silenceTimer?.invalidate()
         silenceTimer = nil
         recognitionRequest?.endAudio()

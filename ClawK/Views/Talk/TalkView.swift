@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TalkView: View {
     @EnvironmentObject var appState: AppState
-    @StateObject private var conversationManager = TalkConversationManager()
+    @ObservedObject private var conversationManager = TalkConversationManager.shared
 
     var body: some View {
         GeometryReader { geometry in
@@ -127,9 +127,6 @@ struct TalkView: View {
             .background(Color.Surface.primary)
         }
         .navigationTitle("")
-        .onAppear {
-            conversationManager.startTTSServer()
-        }
     }
 }
 
