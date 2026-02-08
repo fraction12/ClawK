@@ -22,7 +22,6 @@ class TalkStreamingTTSClient: ObservableObject {
     private let playerNode = AVAudioPlayerNode()
 
     private var webSocket: URLSessionWebSocketTask?
-    private var urlSession: URLSession?
 
     private var sentenceQueue: [String] = []
     private var isProcessingQueue = false
@@ -43,8 +42,12 @@ class TalkStreamingTTSClient: ObservableObject {
     /// Continuation to signal when all buffers for all sentences have finished playing
     private var allDoneContinuation: CheckedContinuation<Void, Never>?
 
-    init(ttsURL: String = "ws://localhost:8766") {
-        self.ttsURL = ttsURL
+    /// Shared URLSession for all WebSocket connections (created once, reused)
+    private lazy var sharedSession: URLSession = URLSession(configuration: .default)
+
+    init(ttsURL: String = "ws://127.0.0.1:8766") {
+        // Normalize localhost → 127.0.0.1 to avoid IPv6 resolution issues
+        self.ttsURL = ttsURL.replacingOccurrences(of: "://localhost:", with: "://127.0.0.1:")
         engine.attach(playerNode)
         engine.connect(playerNode, to: engine.mainMixerNode, format: nil)
         Self.cleanupStaleTempFiles()
@@ -66,26 +69,26 @@ class TalkStreamingTTSClient: ObservableObject {
             logger.error("Invalid TTS URL: \(self.ttsURL, privacy: .public)")
             return
         }
-        let session = URLSession(configuration: .default)
-        self.urlSession = session
-        let task = session.webSocketTask(with: url)
+        let task = sharedSession.webSocketTask(with: url)
         self.webSocket = task
         task.resume()
         logger.info("TTS WebSocket connecting to \(self.ttsURL, privacy: .public)")
     }
 
-    /// Wait briefly for WebSocket handshake to complete
+    /// Wait for WebSocket handshake to complete.
+    /// URLSessionWebSocketTask.send() will queue until handshake finishes,
+    /// but we give a brief pause to let the TCP + HTTP upgrade complete.
     private func waitForConnection() async {
-        // URLSessionWebSocketTask.resume() starts async handshake
-        // Give it a moment to complete before sending data
-        try? await Task.sleep(for: .milliseconds(200))
+        try? await Task.sleep(for: .milliseconds(300))
     }
 
     private func disconnectWebSocket() {
-        webSocket?.cancel(with: .goingAway, reason: nil)
-        webSocket = nil
-        isConnected = false
-        logger.info("TTS WebSocket disconnected")
+        if let ws = webSocket {
+            ws.cancel(with: .goingAway, reason: nil)
+            webSocket = nil
+            isConnected = false
+            logger.info("TTS WebSocket disconnected")
+        }
     }
 
     func enqueueSentence(_ sentence: String) {
@@ -135,6 +138,7 @@ class TalkStreamingTTSClient: ObservableObject {
     func shutdown() {
         stopPlayback()
         disconnectWebSocket()
+        sharedSession.invalidateAndCancel()
     }
 
     // MARK: - Streaming Queue Processing
@@ -206,8 +210,10 @@ class TalkStreamingTTSClient: ObservableObject {
     /// Returns true if at least some audio was scheduled, false on total failure.
     private func streamSentence(_ text: String) async -> Bool {
         if await streamSentenceAttempt(text) { return true }
-        logger.info("TTS first attempt failed, retrying...")
+        logger.info("TTS first attempt failed, reconnecting for retry...")
         disconnectWebSocket()
+        // Brief pause to let the server fully close the old connection
+        try? await Task.sleep(for: .milliseconds(100))
         return await streamSentenceAttempt(text)
     }
 
@@ -318,10 +324,9 @@ class TalkStreamingTTSClient: ObservableObject {
         } catch {
             logger.warning("TTS connection error: \(error.localizedDescription, privacy: .public)")
             cleanup()
-            // Reconnect for next sentence
+            // Just disconnect — caller (streamSentence) handles reconnection
             disconnectWebSocket()
-            ensureConnected()
-            return anyAudioScheduled
+            return false
         }
 
         func cleanup() {

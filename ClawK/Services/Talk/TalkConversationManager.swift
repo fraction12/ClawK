@@ -62,7 +62,7 @@ class TalkConversationManager: ObservableObject {
         self.gatewayWebSocket = GatewayWebSocket()
 
         // Initialize TTS client
-        let ttsURL = UserDefaults.standard.string(forKey: "talkTTSServerURL") ?? "ws://localhost:8766"
+        let ttsURL = UserDefaults.standard.string(forKey: "talkTTSServerURL") ?? "ws://127.0.0.1:8766"
         self.ttsClient = TalkStreamingTTSClient(ttsURL: ttsURL)
 
         TalkSoundEffects.shared.enabled = soundEffectsEnabled
