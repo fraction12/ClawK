@@ -104,7 +104,6 @@ class TalkStreamingTTSClient: ObservableObject {
         queueFinalized = false
         firstSentencePlayed = false
         isPlaying = false
-        engineFormat = nil
         logger.info("TTS playback stopped")
     }
 
@@ -270,8 +269,6 @@ class TalkStreamingTTSClient: ObservableObject {
         }
     }
 
-    private var engineFormat: AVAudioFormat?
-
     private func playAudioDataAndWait(_ data: Data) async {
         let tempURL = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("clawk-tts-\(UUID().uuidString).mp3")
@@ -285,12 +282,9 @@ class TalkStreamingTTSClient: ObservableObject {
                 return
             }
             try file.read(into: buffer)
-            // Keep engine running between sentences — only restart if format changes
-            if !engine.isRunning || engineFormat != format {
-                if engine.isRunning { engine.stop() }
+            if !engine.isRunning {
                 engine.connect(playerNode, to: engine.mainMixerNode, format: format)
                 try engine.start()
-                engineFormat = format
             }
             isPlaying = true
             await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
