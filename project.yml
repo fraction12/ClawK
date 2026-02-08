@@ -23,6 +23,17 @@ targets:
         excludes:
           - "**/*.entitlements"
           - "**/Info.plist"
+          - "**/*.py"
+          - "**/requirements.txt"
+          - "Tests/**"
+    resources:
+      - path: ClawK/Resources/tts_server.py
+      - path: ClawK/Resources/requirements.txt
+    dependencies:
+      - sdk: AVFoundation.framework
+      - sdk: Speech.framework
+      - sdk: Carbon.framework
+      - sdk: NaturalLanguage.framework
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.openclaw.clawk
@@ -30,19 +41,41 @@ targets:
         CODE_SIGN_ENTITLEMENTS: ClawK/ClawK.entitlements
         CODE_SIGN_STYLE: Automatic
         ENABLE_HARDENED_RUNTIME: NO
-        LD_RUNPATH_SEARCH_PATHS: 
+        LD_RUNPATH_SEARCH_PATHS:
           - "@executable_path/../Frameworks"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     entitlements:
       path: ClawK/ClawK.entitlements
+
+  ClawKTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: ClawK/Tests
+      - path: ClawK/Services/Talk/TalkModels.swift
+      - path: ClawK/Services/Talk/TalkGatewayMessage.swift
+    dependencies:
+      - sdk: NaturalLanguage.framework
+      - sdk: Speech.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.openclaw.clawk.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: ""
+        BUNDLE_LOADER: ""
 
 schemes:
   ClawK:
     build:
       targets:
         ClawK: all
+        ClawKTests: [test]
     run:
       config: Debug
+    test:
+      config: Debug
+      targets:
+        - ClawKTests
     profile:
       config: Release
     archive:

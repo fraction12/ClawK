@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import Carbon.HIToolbox
 
 @main
 struct ClawKApp: App {
@@ -27,7 +28,8 @@ enum DeepLinkDestination: String {
     case memory = "memory"
     case canvas = "canvas"
     case settings = "settings"
-    
+    case talk = "talk"
+
     static func from(url: URL) -> DeepLinkDestination? {
         guard url.scheme == "clawk" else { return nil }
         return DeepLinkDestination(rawValue: url.host ?? "")
@@ -40,6 +42,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var menuBarManager: MenuBarManager?
     var appState: AppState?
     var welcomeWindow: NSWindow?
+    var talkOverlayPanel: TalkOverlayPanel?
+    var talkConversationManager: TalkConversationManager?
+    private var hotkeyRef: EventHotKeyRef?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Singleton check - only one instance allowed
@@ -102,10 +107,61 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.menuBarManager = manager
             
             manager.setup(appState: state)
-            
+
             // Start polling
             state.startPolling()
+
+            // Initialize Talk Mode
+            let talkManager = TalkConversationManager()
+            self.talkConversationManager = talkManager
+
+            // Register global hotkey (Option+Space)
+            self.registerTalkHotkey()
         }
+    }
+
+    // MARK: - Talk Mode Hotkey
+
+    private func registerTalkHotkey() {
+        var hotKeyID = EventHotKeyID()
+        hotKeyID.signature = OSType(0x434C574B) // "CLWK"
+        hotKeyID.id = 1
+
+        var eventType = EventTypeSpec(eventClass: OSType(kEventClassKeyboard), eventKind: UInt32(kEventHotKeyPressed))
+
+        let handler: EventHandlerUPP = { _, event, _ -> OSStatus in
+            Task { @MainActor in
+                guard let delegate = NSApp.delegate as? AppDelegate else { return }
+                delegate.toggleTalkOverlay()
+            }
+            return noErr
+        }
+
+        InstallEventHandler(GetApplicationEventTarget(), handler, 1, &eventType, nil, nil)
+
+        // Option+Space: kVK_Space = 0x31, optionKey modifier = 0x0800
+        RegisterEventHotKey(UInt32(kVK_Space), UInt32(optionKey), hotKeyID, GetApplicationEventTarget(), 0, &hotkeyRef)
+    }
+
+    @MainActor
+    func toggleTalkOverlay() {
+        if let panel = talkOverlayPanel, panel.isVisible {
+            panel.orderOut(nil)
+            return
+        }
+
+        if talkOverlayPanel == nil {
+            let panel = TalkOverlayPanel()
+            let talkManager = talkConversationManager ?? TalkConversationManager()
+            self.talkConversationManager = talkManager
+
+            let contentView = TalkOverlayContentView(conversationManager: talkManager)
+            panel.contentViewController = NSHostingController(rootView: contentView)
+            self.talkOverlayPanel = panel
+        }
+
+        talkOverlayPanel?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
     
     /// Show the first-run welcome window
@@ -138,6 +194,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         appState?.flushHeartbeatHistory()
         appState?.stopPolling()
+        talkConversationManager?.stopTTSServer()
+        if let ref = hotkeyRef {
+            UnregisterEventHotKey(ref)
+        }
     }
     
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -179,6 +239,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 menuBarManager?.navigateTo(.canvas)
             case .settings:
                 menuBarManager?.navigateTo(.settings)
+            case .talk:
+                menuBarManager?.navigateTo(.talk)
             }
         }
     }

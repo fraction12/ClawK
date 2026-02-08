@@ -42,6 +42,8 @@ struct MainWindowView: View {
                             MissionControlView()
                         case "canvas":
                             CanvasView()
+                        case "talk":
+                            TalkView()
                         case "settings":
                             SettingsView()
                         default:

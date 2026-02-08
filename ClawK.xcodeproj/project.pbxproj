@@ -7,17 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		061D17BC7C20BDDF80ADBE81 /* SentenceExtractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F2883250C73DB6D9DC059 /* SentenceExtractionTests.swift */; };
+		09991ADB0148F1F0A6B9B535 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D204294AB51DFD3879B32AF9 /* Carbon.framework */; };
 		0BFD1E81CB3A2258E36A594F /* MemorySearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AF8ECC4BD0BF9BDD969F1 /* MemorySearchResultsView.swift */; };
 		12CF7F32E9E77E79A0B79E6B /* MemoryBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E2DCBBFE6A43D359343042 /* MemoryBrowserView.swift */; };
+		16ECEA42D059271E0D5750F3 /* TalkStreamingTTSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD49A15A58DC66C5261A4C2 /* TalkStreamingTTSClient.swift */; };
 		176CC2009B50D09FAA9DF6C5 /* ConnectionStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA62AB001E0A08CFB0C92DB7 /* ConnectionStatusBanner.swift */; };
 		1BD854B84ADAD5BC1286135D /* HeartbeatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163EC6AA9EB9D85222DE0A7F /* HeartbeatModels.swift */; };
+		1C70A3ABDF87244012677679 /* NaturalLanguage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F27E165E19FF606786D550 /* NaturalLanguage.framework */; };
+		1C8BAB93399A8D4514668944 /* TalkTTSServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C35054C4F22C00CCF474003 /* TalkTTSServerManager.swift */; };
 		1F4A0ED045993549EF5C10FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AADC58DE30AF1FE5F1B6DFF6 /* Assets.xcassets */; };
 		235C27A1149AC6C5E39F98BB /* CostEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35DFE9351AA7BE1933E4C2B /* CostEstimator.swift */; };
+		23F668D38AAA518D06FA89E9 /* TalkConversationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504C66FF8AA88AD638E1B3A5 /* TalkConversationManager.swift */; };
 		241C401A836FAFE38F18E5CC /* HeartbeatHistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1814B97FEF2B5F0D5A475D20 /* HeartbeatHistoryService.swift */; };
+		24F654295E9C4F19E4ADECB0 /* GatewayWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BF25005908592B6FD0C620 /* GatewayWebSocket.swift */; };
 		282313994621DCE42378CDEC /* MissionControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967B1E7E51BF2848897EDCC9 /* MissionControlView.swift */; };
 		2BA19F836DBF147B3FC35B75 /* EnhancedQuickStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD2613E8C530943E9D8226E /* EnhancedQuickStatsView.swift */; };
+		2F33070A7A398A59BF9538F6 /* GatewayWebSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6849E8B387EB953D6EE72EA9 /* GatewayWebSocketTests.swift */; };
+		30B16DF1E40D7538485A40DC /* TalkGatewayMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC118A3EA27B8FC43AEFAEA /* TalkGatewayMessage.swift */; };
 		3277B1D4C71DEEB3C22B30C2 /* MemoryTierComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63817B78F28352C3542111EA /* MemoryTierComponents.swift */; };
+		3730C30F5427A542C66E9B39 /* TalkVoiceActivityDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37B52C0EC71994F1786FE21 /* TalkVoiceActivityDetector.swift */; };
 		3956E8AED9F070CB9EBDF02F /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349075132D648E33A58D885F /* ChartData.swift */; };
+		3A930B50D4C5132E121F8556 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6986FC59547F8893A6E37AB /* Speech.framework */; };
 		3BE19E4BC7492CC7A8F30954 /* MemoryVitalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39E3F7DD1892F9F9A5DD774 /* MemoryVitalsView.swift */; };
 		3E459B008FBFC65E242254DE /* MemoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A726926E724121DFA5CCB053 /* MemoryViewModel.swift */; };
 		3E6B8DB50BD906A5E840DEF4 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F081BECD73B4F9B928E00F71 /* WelcomeView.swift */; };
@@ -27,11 +38,16 @@
 		58D9F403DD7E0B2BF3C85DC3 /* ModelInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E43570A6A682E5BE5900C5B /* ModelInfo.swift */; };
 		58F024C28167BCCADC376981 /* QuotaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE52A9BBC9230536C2922545 /* QuotaService.swift */; };
 		5AB614427217DF8A598C763A /* GatewayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B32922ECDFB601432EBB65 /* GatewayClient.swift */; };
+		628CB4386A89B8862714BE50 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6986FC59547F8893A6E37AB /* Speech.framework */; };
 		6359E6C6A7DB1AAC823B8EE4 /* QuotaModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B7A16BAF2A2E5A1F17EF63 /* QuotaModels.swift */; };
 		66B2E9B587727346D8FE5486 /* SessionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E60043AAB346DA76314735 /* SessionInfo.swift */; };
+		66E7C3D581C7C99E88C79C23 /* TalkConversationStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3755800ED2BBAF97A6AABFC /* TalkConversationStateTests.swift */; };
+		6DFE4908381D13929B776FBD /* TalkWaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66144770E322EBFEC92DF13F /* TalkWaveformView.swift */; };
 		75CBF39C2C0FA0DDFB4D834C /* HeartbeatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8087B065E33F21B803A3C052 /* HeartbeatService.swift */; };
 		75E1C91C941FC58C542F871D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 412BD4F4E1018776D3008E14 /* README.md */; };
 		765212041BA93AAE1FCCCA09 /* GatewayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2844C856BB2CB85D3B369AA0 /* GatewayConfig.swift */; };
+		778CEC84CDB7DA35AE9F3609 /* NaturalLanguage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F27E165E19FF606786D550 /* NaturalLanguage.framework */; };
+		7E1E26413E04E4AA141BC0A9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2E2D1637A2CBAD056587F43 /* AVFoundation.framework */; };
 		7FE911C2158177895A07157B /* QuickActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7EE7DEEF57EF8C451C13A /* QuickActionsView.swift */; };
 		806C2ACFF0B99D6AFD7A336D /* ClawKStatusCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8C34909723CB8499F7BC /* ClawKStatusCard.swift */; };
 		80F95891DD4ABA4E0D2298F5 /* MemoryNotConfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10EDF419173CBBA852681653 /* MemoryNotConfiguredView.swift */; };
@@ -41,26 +57,36 @@
 		9628555017A31569A690141F /* DSHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33154B1786F7B08706E33E3B /* DSHeader.swift */; };
 		976A7691E88455E9E207560C /* DSStatusBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B64F217E6157EA8B1371A8D /* DSStatusBadge.swift */; };
 		9D7967BA2081E8C24BED2B6F /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F9F55D59E86C6B4CFFA06D /* Typography.swift */; };
+		A49DD922BE8A8580795A5A5F /* TalkSoundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBD85F48466DB32188CD4CD /* TalkSoundEffects.swift */; };
+		A56BD417CF3B37ACB83F9590 /* TalkOverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1041C15F40E72D86FD2FAA /* TalkOverlayPanel.swift */; };
 		A69CBC15197845D7D192CA08 /* DSCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261564BD1A48893BBC4A3358 /* DSCard.swift */; };
 		AD446B3963768F0335DBC481 /* DSListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15E6F177A0F2A22712CF625 /* DSListItem.swift */; };
 		B8ED2BEC1519C0C7D48F5D6D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA66A021FC5A6DAB5E8A7AD7 /* AppState.swift */; };
+		BBDAFC6B0C65E04062733ACC /* TalkGatewayMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC118A3EA27B8FC43AEFAEA /* TalkGatewayMessage.swift */; };
 		BDFF5C2FBE7B3BCECDB94634 /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1989BD6BB2D4048FF80817AC /* MenuBarManager.swift */; };
+		BFE45A60E91406E5EDCC9D6B /* TalkAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DFCA5BD0D15A38804F7EF0 /* TalkAudioEngine.swift */; };
 		C054BA79C88E8AA7D5C03BD0 /* MemoryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9435020B9D973B0B6C17C11 /* MemoryModels.swift */; };
+		D07C21C036191B9518891F24 /* TalkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06012404E16C15B4C35694FD /* TalkModels.swift */; };
+		D0F8BD97F4C2E5AC1D083BB5 /* TalkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06012404E16C15B4C35694FD /* TalkModels.swift */; };
 		D531D586F1B6F62A54E3E930 /* MemoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C683FF4B4A33DFC61FDBAFCD /* MemoryService.swift */; };
 		D53C70B8B538563666309114 /* DSSkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC71EABBF1FDA5BC5A083755 /* DSSkeleton.swift */; };
 		D8F6EFBC6CE89D2207F0DEB2 /* DSEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD181A06C8B83158184DB17 /* DSEmptyState.swift */; };
 		DD15FC2C8AD174404EA096B2 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3888FBAED5CBA80B725DC448 /* DesignSystem.swift */; };
+		E0F92FF0BAA22165B24A13CE /* TalkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7C10A23C13BC8D0AF3C270 /* TalkView.swift */; };
 		E1C2D0EC958EFA98206C3F12 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAC123E4B2735E1C92F6D80 /* ContentView.swift */; };
 		E6C57279AD45877087646A01 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAD3F997504926D928CDCCE /* AppConfiguration.swift */; };
 		E9D99EC6CB118C5FE42A9289 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96D108FD3D30434669D188E /* SettingsView.swift */; };
 		EC8AE7519E7CF8115DCEBC06 /* SendMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B63A56938BF06AE92DA68E /* SendMessageView.swift */; };
 		F2BDE4EBFFA49BF61BA2AA72 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF2A17C38A78D752FE0E1DB /* Colors.swift */; };
+		F2EBA68E8072989836D7747A /* TalkStateIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775F5479A6C9F0B33CA17A3 /* TalkStateIndicator.swift */; };
 		F44AD3994FD5DD97466E7F19 /* CustomHeartbeatChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C6A0FB3415F3AAA147BCF7 /* CustomHeartbeatChart.swift */; };
 		FA93AEA1A2785346D9F8BC46 /* CronJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD1351D90BA2079310250 /* CronJob.swift */; };
+		FC5C91954782D4A1720926DE /* TalkSpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3BE46FB50356FBB15E426F /* TalkSpeechRecognizer.swift */; };
 		FD2818E1C51A1EA3D218057B /* DSRefreshButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96269C2CFC14848B9F9ED3 /* DSRefreshButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06012404E16C15B4C35694FD /* TalkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkModels.swift; sourceTree = "<group>"; };
 		0CD905418699DE2EC689998B /* ClawKApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClawKApp.swift; sourceTree = "<group>"; };
 		10EDF419173CBBA852681653 /* MemoryNotConfiguredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryNotConfiguredView.swift; sourceTree = "<group>"; };
 		15B32922ECDFB601432EBB65 /* GatewayClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayClient.swift; sourceTree = "<group>"; };
@@ -68,34 +94,50 @@
 		1814B97FEF2B5F0D5A475D20 /* HeartbeatHistoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatHistoryService.swift; sourceTree = "<group>"; };
 		18202E101FA1C88B058C156E /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		1989BD6BB2D4048FF80817AC /* MenuBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarManager.swift; sourceTree = "<group>"; };
+		1C35054C4F22C00CCF474003 /* TalkTTSServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkTTSServerManager.swift; sourceTree = "<group>"; };
 		261564BD1A48893BBC4A3358 /* DSCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCard.swift; sourceTree = "<group>"; };
 		2844C856BB2CB85D3B369AA0 /* GatewayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayConfig.swift; sourceTree = "<group>"; };
 		2B64F217E6157EA8B1371A8D /* DSStatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSStatusBadge.swift; sourceTree = "<group>"; };
+		2DBD85F48466DB32188CD4CD /* TalkSoundEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkSoundEffects.swift; sourceTree = "<group>"; };
 		2E43570A6A682E5BE5900C5B /* ModelInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInfo.swift; sourceTree = "<group>"; };
 		33154B1786F7B08706E33E3B /* DSHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSHeader.swift; sourceTree = "<group>"; };
 		33F9F55D59E86C6B4CFFA06D /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		349075132D648E33A58D885F /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		3888FBAED5CBA80B725DC448 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		3A1041C15F40E72D86FD2FAA /* TalkOverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkOverlayPanel.swift; sourceTree = "<group>"; };
 		3AE7EE7DEEF57EF8C451C13A /* QuickActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionsView.swift; sourceTree = "<group>"; };
 		4007CF70683CA3A0D1BA51A5 /* ClawK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClawK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		412BD4F4E1018776D3008E14 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		47BF25005908592B6FD0C620 /* GatewayWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayWebSocket.swift; sourceTree = "<group>"; };
+		4A3BE46FB50356FBB15E426F /* TalkSpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkSpeechRecognizer.swift; sourceTree = "<group>"; };
+		4B7C10A23C13BC8D0AF3C270 /* TalkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkView.swift; sourceTree = "<group>"; };
 		4FAD3F997504926D928CDCCE /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		504C66FF8AA88AD638E1B3A5 /* TalkConversationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkConversationManager.swift; sourceTree = "<group>"; };
 		5C8088A3C5DB7A5048C02C16 /* Memory3DVisualizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memory3DVisualizationView.swift; sourceTree = "<group>"; };
 		63817B78F28352C3542111EA /* MemoryTierComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTierComponents.swift; sourceTree = "<group>"; };
 		6528D2981ABD942CA66D47D5 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		66144770E322EBFEC92DF13F /* TalkWaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkWaveformView.swift; sourceTree = "<group>"; };
+		6849E8B387EB953D6EE72EA9 /* GatewayWebSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayWebSocketTests.swift; sourceTree = "<group>"; };
 		6CD0F6F95E97B6F10CADDD78 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		70B63A56938BF06AE92DA68E /* SendMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageView.swift; sourceTree = "<group>"; };
 		79E2DCBBFE6A43D359343042 /* MemoryBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrowserView.swift; sourceTree = "<group>"; };
+		7CA2BDA425D390E08376272E /* ClawKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClawKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8087B065E33F21B803A3C052 /* HeartbeatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatService.swift; sourceTree = "<group>"; };
+		84DFCA5BD0D15A38804F7EF0 /* TalkAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkAudioEngine.swift; sourceTree = "<group>"; };
 		8CD436ACA8346EB670629B1E /* MemoryFilePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryFilePreviewView.swift; sourceTree = "<group>"; };
 		94BDD1351D90BA2079310250 /* CronJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CronJob.swift; sourceTree = "<group>"; };
 		95C6A0FB3415F3AAA147BCF7 /* CustomHeartbeatChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeartbeatChart.swift; sourceTree = "<group>"; };
 		967B1E7E51BF2848897EDCC9 /* MissionControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlView.swift; sourceTree = "<group>"; };
+		9BD49A15A58DC66C5261A4C2 /* TalkStreamingTTSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkStreamingTTSClient.swift; sourceTree = "<group>"; };
+		9D4F2883250C73DB6D9DC059 /* SentenceExtractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentenceExtractionTests.swift; sourceTree = "<group>"; };
 		9DF2A17C38A78D752FE0E1DB /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		A3755800ED2BBAF97A6AABFC /* TalkConversationStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkConversationStateTests.swift; sourceTree = "<group>"; };
 		A726926E724121DFA5CCB053 /* MemoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViewModel.swift; sourceTree = "<group>"; };
 		A9435020B9D973B0B6C17C11 /* MemoryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryModels.swift; sourceTree = "<group>"; };
 		AADC58DE30AF1FE5F1B6DFF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B37B52C0EC71994F1786FE21 /* TalkVoiceActivityDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkVoiceActivityDetector.swift; sourceTree = "<group>"; };
 		B39E3F7DD1892F9F9A5DD774 /* MemoryVitalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryVitalsView.swift; sourceTree = "<group>"; };
+		B775F5479A6C9F0B33CA17A3 /* TalkStateIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkStateIndicator.swift; sourceTree = "<group>"; };
 		BEAC123E4B2735E1C92F6D80 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C15E6F177A0F2A22712CF625 /* DSListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSListItem.swift; sourceTree = "<group>"; };
 		C683FF4B4A33DFC61FDBAFCD /* MemoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryService.swift; sourceTree = "<group>"; };
@@ -103,7 +145,9 @@
 		CA66A021FC5A6DAB5E8A7AD7 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		CAD2613E8C530943E9D8226E /* EnhancedQuickStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnhancedQuickStatsView.swift; sourceTree = "<group>"; };
 		CC71EABBF1FDA5BC5A083755 /* DSSkeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSSkeleton.swift; sourceTree = "<group>"; };
+		D204294AB51DFD3879B32AF9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		D35DFE9351AA7BE1933E4C2B /* CostEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostEstimator.swift; sourceTree = "<group>"; };
+		D6986FC59547F8893A6E37AB /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		D96D108FD3D30434669D188E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DD96269C2CFC14848B9F9ED3 /* DSRefreshButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSRefreshButton.swift; sourceTree = "<group>"; };
 		DE52A9BBC9230536C2922545 /* QuotaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaService.swift; sourceTree = "<group>"; };
@@ -111,15 +155,65 @@
 		E43AF8ECC4BD0BF9BDD969F1 /* MemorySearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySearchResultsView.swift; sourceTree = "<group>"; };
 		EBD181A06C8B83158184DB17 /* DSEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEmptyState.swift; sourceTree = "<group>"; };
 		F081BECD73B4F9B928E00F71 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		F0F27E165E19FF606786D550 /* NaturalLanguage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NaturalLanguage.framework; path = System/Library/Frameworks/NaturalLanguage.framework; sourceTree = SDKROOT; };
+		F2E2D1637A2CBAD056587F43 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FA62AB001E0A08CFB0C92DB7 /* ConnectionStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusBanner.swift; sourceTree = "<group>"; };
 		FA6A8C34909723CB8499F7BC /* ClawKStatusCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClawKStatusCard.swift; sourceTree = "<group>"; };
+		FBC118A3EA27B8FC43AEFAEA /* TalkGatewayMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkGatewayMessage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		06DC38FBA15EEC6BA06A7601 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E1E26413E04E4AA141BC0A9 /* AVFoundation.framework in Frameworks */,
+				628CB4386A89B8862714BE50 /* Speech.framework in Frameworks */,
+				09991ADB0148F1F0A6B9B535 /* Carbon.framework in Frameworks */,
+				1C70A3ABDF87244012677679 /* NaturalLanguage.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C6B86253700C6E1A8C099D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				778CEC84CDB7DA35AE9F3609 /* NaturalLanguage.framework in Frameworks */,
+				3A930B50D4C5132E121F8556 /* Speech.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		0A585C3802CF6FAEFD285D2E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F2E2D1637A2CBAD056587F43 /* AVFoundation.framework */,
+				D204294AB51DFD3879B32AF9 /* Carbon.framework */,
+				F0F27E165E19FF606786D550 /* NaturalLanguage.framework */,
+				D6986FC59547F8893A6E37AB /* Speech.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0FB82D1877BB2E3E6FD95AB1 /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				3A1041C15F40E72D86FD2FAA /* TalkOverlayPanel.swift */,
+				B775F5479A6C9F0B33CA17A3 /* TalkStateIndicator.swift */,
+				4B7C10A23C13BC8D0AF3C270 /* TalkView.swift */,
+				66144770E322EBFEC92DF13F /* TalkWaveformView.swift */,
+			);
+			path = Talk;
+			sourceTree = "<group>";
+		};
 		292095F32EFC7F00F67FD116 = {
 			isa = PBXGroup;
 			children = (
 				DEF37A025EA6D33321ACA5CE /* ClawK */,
+				BB6A7F26A83235EEDAC03861 /* Tests */,
+				0A585C3802CF6FAEFD285D2E /* Frameworks */,
 				2E8E383D35281A1CCA1DCF9A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -137,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				4007CF70683CA3A0D1BA51A5 /* ClawK.app */,
+				7CA2BDA425D390E08376272E /* ClawKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,6 +264,7 @@
 			children = (
 				3CFC0EBAA73AC03781C38067 /* Components */,
 				FC45B0F0E0200CA28F1C9E0A /* Memory */,
+				0FB82D1877BB2E3E6FD95AB1 /* Talk */,
 				6528D2981ABD942CA66D47D5 /* CanvasView.swift */,
 				FA6A8C34909723CB8499F7BC /* ClawKStatusCard.swift */,
 				FA62AB001E0A08CFB0C92DB7 /* ConnectionStatusBanner.swift */,
@@ -188,13 +284,6 @@
 				A726926E724121DFA5CCB053 /* MemoryViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		885F1B42422536B2AC742C76 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		8CBD55EF3C82DF5FA99C4E80 /* Components */ = {
@@ -225,9 +314,21 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		BB6A7F26A83235EEDAC03861 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6849E8B387EB953D6EE72EA9 /* GatewayWebSocketTests.swift */,
+				9D4F2883250C73DB6D9DC059 /* SentenceExtractionTests.swift */,
+				A3755800ED2BBAF97A6AABFC /* TalkConversationStateTests.swift */,
+			);
+			name = Tests;
+			path = ClawK/Tests;
+			sourceTree = "<group>";
+		};
 		C444984727C3589D1DDFE648 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				E93EFE5CB18AE65406D8497B /* Talk */,
 				4FAD3F997504926D928CDCCE /* AppConfiguration.swift */,
 				15B32922ECDFB601432EBB65 /* GatewayClient.swift */,
 				2844C856BB2CB85D3B369AA0 /* GatewayConfig.swift */,
@@ -245,7 +346,6 @@
 				4042032AB85E73D81E7D80E3 /* DesignSystem */,
 				29A0EF4B42BF42F66646D45B /* MenuBar */,
 				9217352333E615E9A50F29B0 /* Models */,
-				885F1B42422536B2AC742C76 /* Resources */,
 				C444984727C3589D1DDFE648 /* Services */,
 				86BBD6EAD254DD49B12C96EE /* ViewModels */,
 				6540727AA7D377FB755CB19F /* Views */,
@@ -254,6 +354,23 @@
 				0CD905418699DE2EC689998B /* ClawKApp.swift */,
 			);
 			path = ClawK;
+			sourceTree = "<group>";
+		};
+		E93EFE5CB18AE65406D8497B /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				47BF25005908592B6FD0C620 /* GatewayWebSocket.swift */,
+				84DFCA5BD0D15A38804F7EF0 /* TalkAudioEngine.swift */,
+				504C66FF8AA88AD638E1B3A5 /* TalkConversationManager.swift */,
+				FBC118A3EA27B8FC43AEFAEA /* TalkGatewayMessage.swift */,
+				06012404E16C15B4C35694FD /* TalkModels.swift */,
+				2DBD85F48466DB32188CD4CD /* TalkSoundEffects.swift */,
+				4A3BE46FB50356FBB15E426F /* TalkSpeechRecognizer.swift */,
+				9BD49A15A58DC66C5261A4C2 /* TalkStreamingTTSClient.swift */,
+				1C35054C4F22C00CCF474003 /* TalkTTSServerManager.swift */,
+				B37B52C0EC71994F1786FE21 /* TalkVoiceActivityDetector.swift */,
+			);
+			path = Talk;
 			sourceTree = "<group>";
 		};
 		FC45B0F0E0200CA28F1C9E0A /* Memory */ = {
@@ -279,6 +396,7 @@
 			buildPhases = (
 				3E2A6DE064B480DD31C58CD0 /* Sources */,
 				E2167DEC5AD9CC0CB3C00BAE /* Resources */,
+				06DC38FBA15EEC6BA06A7601 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -290,6 +408,24 @@
 			productName = ClawK;
 			productReference = 4007CF70683CA3A0D1BA51A5 /* ClawK.app */;
 			productType = "com.apple.product-type.application";
+		};
+		F29E9F0743E9F989B866F188 /* ClawKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E3B76321BC970432A7F2588E /* Build configuration list for PBXNativeTarget "ClawKTests" */;
+			buildPhases = (
+				75805DCAC09341213004CE60 /* Sources */,
+				2C6B86253700C6E1A8C099D4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClawKTests;
+			packageProductDependencies = (
+			);
+			productName = ClawKTests;
+			productReference = 7CA2BDA425D390E08376272E /* ClawKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -303,6 +439,9 @@
 					1C37CBE719AC8DA08EF50397 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
+					};
+					F29E9F0743E9F989B866F188 = {
+						DevelopmentTeam = "";
 					};
 				};
 			};
@@ -321,6 +460,7 @@
 			projectRoot = "";
 			targets = (
 				1C37CBE719AC8DA08EF50397 /* ClawK */,
+				F29E9F0743E9F989B866F188 /* ClawKTests */,
 			);
 		};
 /* End PBXProject section */
@@ -365,6 +505,7 @@
 				2BA19F836DBF147B3FC35B75 /* EnhancedQuickStatsView.swift in Sources */,
 				5AB614427217DF8A598C763A /* GatewayClient.swift in Sources */,
 				765212041BA93AAE1FCCCA09 /* GatewayConfig.swift in Sources */,
+				24F654295E9C4F19E4ADECB0 /* GatewayWebSocket.swift in Sources */,
 				241C401A836FAFE38F18E5CC /* HeartbeatHistoryService.swift in Sources */,
 				1BD854B84ADAD5BC1286135D /* HeartbeatModels.swift in Sources */,
 				75CBF39C2C0FA0DDFB4D834C /* HeartbeatService.swift in Sources */,
@@ -389,8 +530,33 @@
 				66B2E9B587727346D8FE5486 /* SessionInfo.swift in Sources */,
 				E9D99EC6CB118C5FE42A9289 /* SettingsView.swift in Sources */,
 				4627B89E6FE8F0A72F6A811D /* Spacing.swift in Sources */,
+				BFE45A60E91406E5EDCC9D6B /* TalkAudioEngine.swift in Sources */,
+				23F668D38AAA518D06FA89E9 /* TalkConversationManager.swift in Sources */,
+				BBDAFC6B0C65E04062733ACC /* TalkGatewayMessage.swift in Sources */,
+				D0F8BD97F4C2E5AC1D083BB5 /* TalkModels.swift in Sources */,
+				A56BD417CF3B37ACB83F9590 /* TalkOverlayPanel.swift in Sources */,
+				A49DD922BE8A8580795A5A5F /* TalkSoundEffects.swift in Sources */,
+				FC5C91954782D4A1720926DE /* TalkSpeechRecognizer.swift in Sources */,
+				F2EBA68E8072989836D7747A /* TalkStateIndicator.swift in Sources */,
+				16ECEA42D059271E0D5750F3 /* TalkStreamingTTSClient.swift in Sources */,
+				1C8BAB93399A8D4514668944 /* TalkTTSServerManager.swift in Sources */,
+				E0F92FF0BAA22165B24A13CE /* TalkView.swift in Sources */,
+				3730C30F5427A542C66E9B39 /* TalkVoiceActivityDetector.swift in Sources */,
+				6DFE4908381D13929B776FBD /* TalkWaveformView.swift in Sources */,
 				9D7967BA2081E8C24BED2B6F /* Typography.swift in Sources */,
 				3E6B8DB50BD906A5E840DEF4 /* WelcomeView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		75805DCAC09341213004CE60 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F33070A7A398A59BF9538F6 /* GatewayWebSocketTests.swift in Sources */,
+				061D17BC7C20BDDF80ADBE81 /* SentenceExtractionTests.swift in Sources */,
+				66E7C3D581C7C99E88C79C23 /* TalkConversationStateTests.swift in Sources */,
+				30B16DF1E40D7538485A40DC /* TalkGatewayMessage.swift in Sources */,
+				D07C21C036191B9518891F24 /* TalkModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +622,23 @@
 			};
 			name = Release;
 		};
+		597D423147907001E964762F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.openclaw.clawk.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "";
+			};
+			name = Release;
+		};
 		5B0A441D18AD3DAD7B28A4CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -489,6 +672,23 @@
 				SDKROOT = macosx;
 			};
 			name = Release;
+		};
+		8489AE82D69A02EE14E68516 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.openclaw.clawk.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "";
+			};
+			name = Debug;
 		};
 		F8F75548C238F19213A86A2C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -573,6 +773,15 @@
 			buildConfigurations = (
 				5B0A441D18AD3DAD7B28A4CA /* Debug */,
 				64231ADB853F2039E09210C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E3B76321BC970432A7F2588E /* Build configuration list for PBXNativeTarget "ClawKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8489AE82D69A02EE14E68516 /* Debug */,
+				597D423147907001E964762F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

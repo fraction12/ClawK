@@ -31,9 +31,10 @@ struct SettingsView: View {
                             VStack(spacing: Spacing.xxl) {
                                 ConnectionCard()
                                 RefreshCard()
+                                TalkSettingsCard()
                             }
                             .frame(minWidth: Spacing.Layout.columnMinWidth)
-                            
+
                             // Right Column - Info
                             VStack(spacing: Spacing.xxl) {
                                 DiscoveryCard()
@@ -46,6 +47,7 @@ struct SettingsView: View {
                         VStack(spacing: Spacing.xxl) {
                             ConnectionCard()
                             RefreshCard()
+                            TalkSettingsCard()
                             DiscoveryCard()
                             AboutCard()
                         }
@@ -451,6 +453,130 @@ struct AboutCard: View {
                     Text("Built with SwiftUI")
                         .font(.ClawK.captionSmall)
                         .foregroundColor(Color.Text.tertiary)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Talk Settings Card
+
+struct TalkSettingsCard: View {
+    @StateObject private var conversationManager = TalkConversationManager()
+
+    var body: some View {
+        DSCard(
+            title: "\u{1F399}\u{FE0F} TALK MODE",
+            color: .cyan,
+            tooltip: "Configure Talk Mode voice conversation settings"
+        ) {
+            VStack(spacing: Spacing.xl) {
+                // Sound Effects
+                HStack {
+                    Text("Sound Effects")
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Toggle("", isOn: $conversationManager.soundEffectsEnabled)
+                        .labelsHidden()
+                        .toggleStyle(.switch)
+                        .tint(.cyan)
+                }
+
+                Divider()
+
+                // Silence Threshold
+                HStack {
+                    Text("Silence Threshold")
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text(String(format: "%.1fs", conversationManager.silenceThreshold))
+                        .font(.ClawK.valueMono)
+                        .foregroundColor(.cyan)
+                }
+
+                Slider(
+                    value: $conversationManager.silenceThreshold,
+                    in: 0.5...5.0,
+                    step: 0.1
+                )
+                .tint(.cyan)
+
+                Text("How long to wait after you stop speaking before sending")
+                    .font(.ClawK.caption)
+                    .foregroundColor(.secondary)
+
+                Divider()
+
+                // Interrupt on Speech
+                HStack {
+                    Text("Interrupt on Speech")
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Toggle("", isOn: $conversationManager.interruptOnSpeech)
+                        .labelsHidden()
+                        .toggleStyle(.switch)
+                        .tint(.cyan)
+                }
+
+                Text("Stop Claude's audio when you start speaking")
+                    .font(.ClawK.caption)
+                    .foregroundColor(.secondary)
+
+                Divider()
+
+                // TTS Server Status
+                HStack {
+                    Text("TTS Server")
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    if conversationManager.ttsServerManager.isRunning {
+                        HStack(spacing: 4) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                            Text("Running")
+                                .font(.ClawK.caption)
+                                .foregroundColor(.green)
+                        }
+                    } else if conversationManager.ttsServerManager.isPortInUse(8765) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                            Text("External")
+                                .font(.ClawK.caption)
+                                .foregroundColor(.green)
+                        }
+                    } else {
+                        HStack(spacing: 4) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.red)
+                            Text("Stopped")
+                                .font(.ClawK.caption)
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+
+                HStack(spacing: Spacing.md) {
+                    Button(action: { conversationManager.startTTSServer() }) {
+                        HStack {
+                            Image(systemName: "play.fill")
+                            Text("Start")
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.cyan)
+
+                    Button(action: { conversationManager.stopTTSServer() }) {
+                        HStack {
+                            Image(systemName: "stop.fill")
+                            Text("Stop")
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                    }
+                    .buttonStyle(.bordered)
                 }
             }
         }

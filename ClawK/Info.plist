@@ -35,6 +35,10 @@
         <key>NSAllowsLocalNetworking</key>
         <true/>
     </dict>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>ClawK Talk Mode needs microphone access for voice conversations.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>ClawK Talk Mode uses speech recognition to transcribe your voice.</string>
     <key>LSUIElement</key>
     <true/>
     <key>CFBundleURLTypes</key>

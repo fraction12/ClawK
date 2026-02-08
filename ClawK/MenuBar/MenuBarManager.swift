@@ -301,7 +301,8 @@ class MenuBarManager: ObservableObject {
         case canvas
         case settings
         case vitals
-        
+        case talk
+
         var tabName: String {
             switch self {
             case .missionControl: return "mission"
@@ -309,6 +310,7 @@ class MenuBarManager: ObservableObject {
             case .canvas: return "canvas"
             case .settings: return "settings"
             case .vitals: return "vitals"
+            case .talk: return "talk"
             }
         }
     }
