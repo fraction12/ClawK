@@ -70,6 +70,12 @@ class TalkConversationManager: ObservableObject {
         setupVoiceActivityDetector()
         setupAudioLevelForwarding()
         loadHistory()
+        
+        // Connect to gateway eagerly so status shows "Connected" immediately
+        gatewayWebSocket.connect()
+        
+        // Start TTS server at init
+        startTTSServer()
     }
 
     // MARK: - Setup
