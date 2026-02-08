@@ -74,6 +74,25 @@ class TalkStreamingTTSClient: ObservableObject {
         logger.info("TTS WebSocket connecting to \(self.ttsURL, privacy: .public)")
     }
 
+    /// Wait for WebSocket to be ready by sending a ping
+    private func waitForConnection() async -> Bool {
+        guard let ws = webSocket else { return false }
+        for _ in 0..<10 {
+            let ok = await withCheckedContinuation { (cont: CheckedContinuation<Bool, Never>) in
+                ws.sendPing { error in
+                    cont.resume(returning: error == nil)
+                }
+            }
+            if ok {
+                isConnected = true
+                return true
+            }
+            try? await Task.sleep(for: .milliseconds(100))
+        }
+        logger.error("TTS WebSocket failed to connect after retries")
+        return false
+    }
+
     private func disconnectWebSocket() {
         webSocket?.cancel(with: .goingAway, reason: nil)
         webSocket = nil
@@ -199,7 +218,7 @@ class TalkStreamingTTSClient: ObservableObject {
     /// Returns true if at least some audio was scheduled, false on total failure.
     private func streamSentence(_ text: String) async -> Bool {
         ensureConnected()
-        guard let ws = webSocket else { return false }
+        guard await waitForConnection(), let ws = webSocket else { return false }
 
         let tempURL = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("clawk-tts-\(UUID().uuidString).mp3")
