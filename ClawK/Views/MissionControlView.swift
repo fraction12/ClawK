@@ -110,7 +110,7 @@ struct ActiveNowCard: View {
                                 icon: sessionIcon(for: session.key),
                                 iconColor: Color.forSessionType(session.key),
                                 title: session.friendlyName,
-                                subtitle: "\(session.totalTokens.formatted()) tokens • \(session.modelShortName)",
+                                subtitle: "\((session.totalTokens ?? 0).formatted()) tokens • \(session.modelShortName)",
                                 trailing: session.lastUpdatedDate?.formatted(.relative(presentation: .named))
                             )
                         }
@@ -195,7 +195,7 @@ struct SubagentsCard: View {
                             DSSubagentRow(
                                 name: session.friendlyName,
                                 modelName: session.modelShortName,
-                                tokenCount: session.totalTokens
+                                tokenCount: session.totalTokens ?? 0
                             )
                         }
                     }
@@ -357,7 +357,7 @@ struct ModelUsageCard: View {
     /// Sum of totalTokens across all sessions updated today
     private var totalContextTokens: Int {
         return appState.sessions
-            .reduce(0) { $0 + $1.totalTokens }
+            .reduce(0) { $0 + ($1.totalTokens ?? 0) }
     }
     
     /// Sessions updated in last 30 minutes
@@ -515,7 +515,7 @@ struct ModelUsageCard: View {
     @ViewBuilder
     private func contextBar(label: String, session: SessionInfo) -> some View {
         let maxTokens = appState.contextWindow(for: session.model)
-        let used = session.totalTokens
+        let used = session.totalTokens ?? 0
         let percent = maxTokens > 0 ? (Double(used) / Double(maxTokens)) * 100 : 0
         
         VStack(alignment: .leading, spacing: 4) {

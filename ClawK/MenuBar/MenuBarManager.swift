@@ -14,14 +14,14 @@ class MenuBarManager: ObservableObject {
     private var statusItem: NSStatusItem?
     private var popover: NSPopover?
     private var mainWindow: NSWindow?
-    private var eventMonitor: Any?
+    nonisolated(unsafe) private var eventMonitor: Any?
     private var hoverView: StatusItemHoverView?
     
     @Published var isWindowVisible = false
     @Published var isPopoverVisible = false
     
     weak var appState: AppState?
-    private var terminationObserver: NSObjectProtocol?
+    nonisolated(unsafe) private var terminationObserver: NSObjectProtocol?
     
     init() {
         // Register for app termination to ensure cleanup of global event monitors
@@ -301,7 +301,6 @@ class MenuBarManager: ObservableObject {
         case canvas
         case settings
         case vitals
-        case talk
 
         var tabName: String {
             switch self {
@@ -310,7 +309,6 @@ class MenuBarManager: ObservableObject {
             case .canvas: return "canvas"
             case .settings: return "settings"
             case .vitals: return "vitals"
-            case .talk: return "talk"
             }
         }
     }

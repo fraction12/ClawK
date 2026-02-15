@@ -80,7 +80,7 @@ struct CostEstimator {
     /// Estimate daily cost based on current usage rate
     static func estimateDailyCost(sessions: [SessionInfo]) -> Double {
         return sessions.reduce(0) { total, session in
-            total + estimateCost(model: session.model, totalTokens: session.totalTokens)
+            total + estimateCost(model: session.model, totalTokens: session.totalTokens ?? 0)
         }
     }
     

@@ -35,7 +35,7 @@ import Foundation
 class HeartbeatService {
     
     /// Shared instance
-    static let shared = HeartbeatService()
+    nonisolated(unsafe) static let shared = HeartbeatService()
     
     // MARK: - Context Window Defaults
     
@@ -299,7 +299,7 @@ class HeartbeatService {
             return (nil, activeSessions.count, mostRecent)
         }
         
-        let percent = (Double(mostRecent.totalTokens) / Double(maxTokens)) * 100.0
+        let percent = (Double(mostRecent.totalTokens ?? 0) / Double(maxTokens)) * 100.0
         
         return (percent, activeSessions.count, mostRecent)
     }

@@ -12,7 +12,7 @@ import Combine
 /// Centralized configuration singleton that auto-discovers the user's OpenClaw installation.
 /// All file paths, gateway URLs, and agent names derive from this single source of truth.
 class AppConfiguration: ObservableObject {
-    static let shared = AppConfiguration()
+    nonisolated(unsafe) static let shared = AppConfiguration()
     
     // MARK: - UserDefaults Keys
     private static let agentNameKey = "appConfig.agentName"

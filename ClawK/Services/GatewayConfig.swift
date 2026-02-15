@@ -9,7 +9,7 @@ import Foundation
 
 /// Centralized gateway configuration
 class GatewayConfig: ObservableObject {
-    static let shared = GatewayConfig()
+    nonisolated(unsafe) static let shared = GatewayConfig()
     
     /// UserDefaults key for custom gateway URL
     private static let customURLKey = "customGatewayURL"

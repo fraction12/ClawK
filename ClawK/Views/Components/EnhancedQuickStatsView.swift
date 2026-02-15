@@ -90,8 +90,8 @@ struct EnhancedQuickStatsView: View {
             
             if let session = appState.telegramSession {
                 let contextWindow = appState.contextWindow(for: session.model)
-                let percent = Double(session.totalTokens) / Double(contextWindow) * 100
-                let usedStr = formatTokens(session.totalTokens)
+                let percent = Double(session.totalTokens ?? 0) / Double(contextWindow) * 100
+                let usedStr = formatTokens(session.totalTokens ?? 0)
                 let totalStr = formatTokens(contextWindow)
                 
                 VStack(alignment: .leading, spacing: 4) {
@@ -274,7 +274,7 @@ struct EnhancedQuickStatsView: View {
         var contextPercent: Double = 0
         if let session = appState.telegramSession {
             let contextWindow = appState.contextWindow(for: session.model)
-            contextPercent = Double(session.totalTokens) / Double(contextWindow) * 100
+            contextPercent = Double(session.totalTokens ?? 0) / Double(contextWindow) * 100
         }
         
         // Check quota usage

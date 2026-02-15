@@ -30,8 +30,6 @@ struct SidebarView: View {
                 Label("Canvas", systemImage: "rectangle.on.rectangle")
                     .tag("canvas")
 
-                Label("Talk", systemImage: "mic.fill")
-                    .tag("talk")
             }
 
             Section("CONFIGURATION") {

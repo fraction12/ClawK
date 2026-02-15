@@ -11,12 +11,13 @@ enum GatewayError: LocalizedError {
     case invalidURL
     case unauthorized
     case notFound
+    case toolBlocked(String)
     case serverError(String)
     case decodingError(Error)
     case networkError(Error)
     case timeout
     case noToken
-    
+
     var errorDescription: String? {
         switch self {
         case .invalidURL:
@@ -25,6 +26,8 @@ enum GatewayError: LocalizedError {
             return "Unauthorized - check gateway token"
         case .notFound:
             return "Endpoint not found"
+        case .toolBlocked(let toolName):
+            return "Tool blocked by security policy: \(toolName)"
         case .serverError(let message):
             return "Server error: \(message)"
         case .decodingError(let error):
@@ -37,7 +40,7 @@ enum GatewayError: LocalizedError {
             return "No gateway token configured"
         }
     }
-    
+
     /// Check if this is a timeout error
     var isTimeout: Bool {
         if case .timeout = self { return true }
@@ -135,6 +138,15 @@ actor GatewayClient {
             case 401:
                 throw GatewayError.unauthorized
             case 404:
+                // Check if this is a tool blocked error
+                if let errorJson = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   let error = errorJson["error"] as? [String: Any],
+                   let message = error["message"] as? String,
+                   message.contains("Tool not available") {
+                    // Extract tool name from message like "Tool not available: exec"
+                    let toolName = message.replacingOccurrences(of: "Tool not available: ", with: "")
+                    throw GatewayError.toolBlocked(toolName)
+                }
                 throw GatewayError.notFound
             default:
                 if let errorJson = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -195,36 +207,28 @@ actor GatewayClient {
     }
     
     // MARK: - Models
-    
+
     func fetchModels() async throws -> [ModelInfo] {
-        // Use exec to run openclaw models list --json
-        let data = try await invokeToolRaw(tool: "exec", args: ["command": "openclaw models list --json"])
-        
-        struct ToolResponse: Codable {
-            let ok: Bool
-            let result: ResultPayload?
+        // Run CLI command directly via Process (exec tool is now blocked by security policy)
+        let result = await Self.runOpenClawCommand(["models", "list", "--json"])
+
+        guard result.exitCode == 0 else {
+            // Silently fail - return empty array
+            return []
         }
-        
-        struct ResultPayload: Codable {
-            let details: ExecResponse?
+
+        guard !result.stdout.isEmpty else {
+            return []
         }
-        
-        struct ExecResponse: Codable {
-            let stdout: String?
-        }
-        
+
         struct ModelsListResponse: Codable {
             let models: [ModelInfo]
         }
-        
+
         do {
-            let response = try JSONDecoder().decode(ToolResponse.self, from: data)
-            guard let stdout = response.result?.details?.stdout else {
-                return []
-            }
-            
             // Parse the JSON output from openclaw models list
-            let modelsResponse = try JSONDecoder().decode(ModelsListResponse.self, from: Data(stdout.utf8))
+            let modelsData = Data(result.stdout.utf8)
+            let modelsResponse = try JSONDecoder().decode(ModelsListResponse.self, from: modelsData)
             return modelsResponse.models
         } catch {
             // Fallback: return empty array if parsing fails
@@ -533,9 +537,16 @@ actor GatewayClient {
     }
     
     struct MemorySearchHit: Codable {
-        let content: String?
+        let snippet: String?
         let score: Double?
-        let metadata: [String: String]?
+        let path: String?
+        let startLine: Int?
+        let endLine: Int?
+        let source: String?
+        let citation: String?
+
+        // Backward compatibility - views that use .content
+        var content: String? { snippet }
     }
     
     func searchMemory(query: String, limit: Int = 10) async throws -> [MemorySearchHit] {

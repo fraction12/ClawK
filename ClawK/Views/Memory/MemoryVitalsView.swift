@@ -367,7 +367,7 @@ struct MainSessionView: View {
     }
     
     private var percent: Double {
-        Double(session.totalTokens) / Double(contextWindow) * 100
+        Double(session.totalTokens ?? 0) / Double(contextWindow) * 100
     }
     
     private var color: Color {
@@ -387,7 +387,7 @@ struct MainSessionView: View {
             }
             
             HStack(alignment: .lastTextBaseline, spacing: Spacing.xs) {
-                Text(formatTokens(session.totalTokens))
+                Text(formatTokens(session.totalTokens ?? 0))
                     .font(.ClawK.valueLarge)
                 Text("/")
                     .foregroundColor(.secondary)
@@ -833,7 +833,7 @@ class MemoryVitalsLoader: ObservableObject {
             return
         }
         
-        let currentTokens = telegramSession.totalTokens
+        let currentTokens = telegramSession.totalTokens ?? 0
         let maxTokens = appState.contextWindow(for: telegramSession.model)
         
         if contextPressure?.currentTokens != currentTokens ||
@@ -906,7 +906,7 @@ class MemoryVitalsLoader: ObservableObject {
             .filter({ $0.key.hasPrefix(AppConfiguration.shared.telegramSessionKeyPrefix) })
             .sorted(by: { ($0.updatedAt ?? 0) > ($1.updatedAt ?? 0) })
             .first {
-            let currentTokens = telegramSession.totalTokens
+            let currentTokens = telegramSession.totalTokens ?? 0
             let maxTokens = appState?.contextWindow(for: telegramSession.model) ?? 195_000
             
             contextPressure = ContextPressure(

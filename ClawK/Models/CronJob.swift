@@ -20,6 +20,9 @@ struct CronJob: Codable, Identifiable {
     let payload: CronPayload?
     let state: CronState?
     let isolation: CronIsolation?
+    let description: String?
+    let deleteAfterRun: Bool?
+    let delivery: CronDelivery?
     
     var isEnabled: Bool {
         enabled ?? true
@@ -122,6 +125,14 @@ struct CronState: Codable {
     let lastRunAtMs: Int64?
     let lastStatus: String?
     let lastDurationMs: Int64?
+    let consecutiveErrors: Int?
+}
+
+struct CronDelivery: Codable {
+    let mode: String?
+    let channel: String?
+    let to: String?
+    let bestEffort: Bool?
 }
 
 struct CronIsolation: Codable {

@@ -71,7 +71,7 @@ struct HeartbeatHistoryResult {
 class HeartbeatHistoryService {
     
     /// Shared instance
-    static let shared = HeartbeatHistoryService()
+    nonisolated(unsafe) static let shared = HeartbeatHistoryService()
     
     /// Path to the main session JSONL file (legacy - returns nil on error)
     private var mainSessionPath: URL? {

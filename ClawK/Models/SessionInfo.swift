@@ -18,7 +18,8 @@ struct SessionInfo: Codable, Identifiable {
     let sessionId: String
     let model: String?
     let contextTokens: Int?
-    let totalTokens: Int
+    let totalTokens: Int?
+    let thinkingLevel: String??
     let systemSent: Bool?
     let abortedLastRun: Bool?
     let lastChannel: String?
@@ -34,8 +35,8 @@ struct SessionInfo: Codable, Identifiable {
     }
     
     var contextUsagePercent: Double {
-        guard let total = contextTokens, total > 0 else { return 0 }
-        return Double(totalTokens) / Double(total) * 100
+        guard let tokens = totalTokens, let total = contextTokens, total > 0 else { return 0 }
+        return Double(tokens) / Double(total) * 100
     }
     
     var modelShortName: String {

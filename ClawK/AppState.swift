@@ -186,7 +186,7 @@ class AppState: ObservableObject {
     }
     
     var totalTokensUsed: Int {
-        sessions.reduce(0) { $0 + $1.totalTokens }
+        sessions.reduce(0) { $0 + ($1.totalTokens ?? 0) }
     }
     
     /// Get actual context window for a model (from model catalog)
@@ -303,13 +303,13 @@ class AppState: ObservableObject {
         var contextPercent: Double = 0
         
         if let telegram = telegramSession {
-            let tokens = telegram.totalTokens
+            let tokens = telegram.totalTokens ?? 0
             let maxTokens = contextWindow(for: telegram.model)
             if maxTokens > 0 && tokens > 0 {
                 contextPercent = (Double(tokens) / Double(maxTokens)) * 100.0
             }
         }
-        
+
         // Fall back to heartbeat-parsed value if no telegram session data
         if contextPercent == 0 {
             if let parsedPercent = heartbeatStatus.contextPercent, parsedPercent > 0 {
@@ -544,7 +544,7 @@ class AppState: ObservableObject {
         // Context percent: prefer live calculation from sessions_list
         var contextPercent: Double? = nil
         if let telegram = telegramSession {
-            let tokens = telegram.totalTokens
+            let tokens = telegram.totalTokens ?? 0
             let maxTokens = contextWindow(for: telegram.model)
             if maxTokens > 0 && tokens > 0 {
                 contextPercent = (Double(tokens) / Double(maxTokens)) * 100.0

@@ -11,10 +11,10 @@ import SQLite3
 // SQLite destructor constant - SQLITE_TRANSIENT (-1) tells SQLite to make its own copy of the string
 private let SQLITE_TRANSIENT: sqlite3_destructor_type = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
-actor MemoryService {
+@MainActor class MemoryService {
     private let memoryPath: String
     private let dbPath: String
-    private var db: OpaquePointer?
+    nonisolated(unsafe) private var db: OpaquePointer?
     
     init() {
         let config = AppConfiguration.shared

@@ -111,7 +111,7 @@ struct MemoryStructure {
         return files
     }
     
-    static let empty = MemoryStructure(hot: [], warm: [], cold: [], archive: [])
+    nonisolated(unsafe) static let empty = MemoryStructure(hot: [], warm: [], cold: [], archive: [])
 }
 
 // MARK: - Search Result

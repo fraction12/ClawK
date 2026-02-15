@@ -14,7 +14,7 @@ class QuotaService {
     
     // MARK: - Singleton
     
-    static let shared = QuotaService()
+    nonisolated(unsafe) static let shared = QuotaService()
     private init() {}
     
     // MARK: - Paths
