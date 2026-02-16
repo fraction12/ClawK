@@ -139,7 +139,7 @@ final class HeartbeatServiceTests: XCTestCase {
     }
 
     func testContextWindowOpus46Fallback() {
-        XCTAssertEqual(service.contextWindow(for: "claude-opus-4-6", models: []), 1_000_000)
+        XCTAssertEqual(service.contextWindow(for: "claude-opus-4-6", models: []), 200_000)
     }
 
     func testContextWindowNilModel() {
