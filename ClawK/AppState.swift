@@ -211,7 +211,7 @@ class AppState: ObservableObject {
         if let model = models.first(where: { $0.id == modelId || $0.id.hasSuffix("/\(modelId)") || modelId.hasSuffix("/\($0.id)") }) {
             result = model.effectiveContextWindow
         } else if modelId.contains("opus-4-6") {
-            result = 1_000_000  // Claude Opus 4.6
+            result = 200_000  // Claude Opus 4.6
         } else if modelId.contains("claude-4") || modelId.contains("claude-3-5-sonnet") {
             result = 200_000  // Claude 4.x and 3.5 models
         } else if modelId.contains("gpt-4") {

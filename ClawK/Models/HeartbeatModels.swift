@@ -13,9 +13,14 @@ import Foundation
 struct HeartbeatConfig: Codable {
     let enabled: Bool
     let every: String
-    let everyMs: Int64
+    let everyMs: Int64?
     let model: String?
     let target: String?
+    
+    /// Safe accessor — returns 0 when everyMs is null (disabled agents)
+    var effectiveEveryMs: Int64 {
+        everyMs ?? 0
+    }
     
     static let disabled = HeartbeatConfig(
         enabled: false,

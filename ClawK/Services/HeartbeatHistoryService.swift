@@ -73,71 +73,89 @@ class HeartbeatHistoryService {
     /// Shared instance
     nonisolated(unsafe) static let shared = HeartbeatHistoryService()
     
-    /// Path to the main session JSONL file (legacy - returns nil on error)
-    private var mainSessionPath: URL? {
-        try? getMainSessionPath()
-    }
-    
-    /// Get path to the main session JSONL file with proper error handling
+    /// Get paths to all relevant session JSONL files (main + telegram sessions)
+    /// Heartbeats target "last" active session, which is usually a Telegram session
     /// - Throws: HeartbeatHistoryError with specific failure reason
-    /// - Returns: URL to the main session JSONL file
-    private func getMainSessionPath() throws -> URL {
+    /// - Returns: Array of URLs to session JSONL files that may contain heartbeat entries
+    private func getHeartbeatSessionPaths() throws -> [URL] {
         let config = AppConfiguration.shared
         let sessionsDir = URL(fileURLWithPath: config.sessionsPath)
         
-        // Read sessions.json to find the main session's sessionId
+        // Read sessions.json to find session IDs
         let sessionsIndexPath = sessionsDir.appendingPathComponent("sessions.json")
         
         guard FileManager.default.fileExists(atPath: sessionsIndexPath.path) else {
-        debugLog("HeartbeatHistoryService: sessions.json not found at \(sessionsIndexPath.path)")
+            debugLog("HeartbeatHistoryService: sessions.json not found at \(sessionsIndexPath.path)")
             throw HeartbeatHistoryError.sessionsIndexNotFound
         }
         
         guard let data = try? Data(contentsOf: sessionsIndexPath),
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-        debugLog("HeartbeatHistoryService: Could not parse sessions.json")
+            debugLog("HeartbeatHistoryService: Could not parse sessions.json")
             throw HeartbeatHistoryError.sessionsIndexParseError
         }
         
-        // sessions.json is a flat dictionary where keys are session keys (e.g., "agent:main:main")
-        // and values are session objects containing sessionId
-        let mainSessionKey = AppConfiguration.shared.mainSessionKey
-        guard let mainSession = json[mainSessionKey] as? [String: Any],
-              let sessionId = mainSession["sessionId"] as? String else {
-        debugLog("HeartbeatHistoryService: Could not find \(mainSessionKey) in sessions.json")
-        debugLog("HeartbeatHistoryService: Available keys: \(json.keys.joined(separator: ", "))")
+        var paths: [URL] = []
+        let mainSessionKey = config.mainSessionKey
+        let telegramPrefix = config.telegramSessionKeyPrefix
+        
+        for (key, value) in json {
+            // Skip cron and subagent sessions
+            guard !key.contains("cron:") && !key.contains("subagent") else { continue }
+            
+            // Include main session and telegram sessions
+            guard key == mainSessionKey || key.hasPrefix(telegramPrefix) else { continue }
+            
+            guard let sessionObj = value as? [String: Any],
+                  let sessionId = sessionObj["sessionId"] as? String else { continue }
+            
+            let sessionFile = sessionsDir.appendingPathComponent("\(sessionId).jsonl")
+            if FileManager.default.fileExists(atPath: sessionFile.path) {
+                paths.append(sessionFile)
+                debugLog("HeartbeatHistoryService: Found session file: \(key) → \(sessionId).jsonl")
+            }
+        }
+        
+        debugLog("HeartbeatHistoryService: Found \(paths.count) relevant session files")
+        
+        if paths.isEmpty {
+            debugLog("HeartbeatHistoryService: No relevant sessions found. Available keys: \(json.keys.joined(separator: ", "))")
             throw HeartbeatHistoryError.mainSessionNotFound
         }
         
-        debugLog("HeartbeatHistoryService: Found main session ID: \(sessionId)")
-        
-        // Return path to main session JSONL
-        let mainSessionFile = sessionsDir.appendingPathComponent("\(sessionId).jsonl")
-        
-        guard FileManager.default.fileExists(atPath: mainSessionFile.path) else {
-        debugLog("HeartbeatHistoryService: Main session file does not exist: \(mainSessionFile.path)")
-            throw HeartbeatHistoryError.sessionFileNotFound(sessionId: sessionId)
-        }
-        
-        debugLog("HeartbeatHistoryService: Main session file found: \(mainSessionFile.path)")
-        return mainSessionFile
+        return paths
     }
     
-    /// Load heartbeat history from the main session JSONL
+    /// Load heartbeat history from all relevant session JSONL files
+    /// Aggregates heartbeat entries from main + telegram sessions
     /// - Parameter limit: Maximum number of entries to return (default 96 = 24h @ 15min)
     /// - Returns: Array of HeartbeatEntry sorted by timestamp (oldest first)
     func loadHeartbeatHistory(limit: Int = 96) -> [HeartbeatEntry] {
         debugLog("HeartbeatHistoryService: loadHeartbeatHistory() called with limit \(limit)")
         
-        guard let sessionPath = mainSessionPath else {
-        debugLog("HeartbeatHistoryService: Could not find main session JSONL - mainSessionPath returned nil")
+        guard let sessionPaths = try? getHeartbeatSessionPaths() else {
+            debugLog("HeartbeatHistoryService: Could not find any relevant session JSONL files")
             return []
         }
         
-        debugLog("HeartbeatHistoryService: Loading from \(sessionPath.path)")
-        let entries = parseHeartbeatsFromJSONL(at: sessionPath, limit: limit)
-        debugLog("HeartbeatHistoryService: loadHeartbeatHistory() returning \(entries.count) entries")
-        return entries
+        var allEntries: [HeartbeatEntry] = []
+        for path in sessionPaths {
+            debugLog("HeartbeatHistoryService: Loading from \(path.path)")
+            let entries = parseHeartbeatsFromJSONL(at: path, limit: limit)
+            allEntries.append(contentsOf: entries)
+        }
+        
+        // Deduplicate by timestamp (within 60s window) and sort
+        allEntries.sort { $0.timestamp < $1.timestamp }
+        allEntries = deduplicateEntries(allEntries)
+        
+        // Apply limit
+        if allEntries.count > limit {
+            allEntries = Array(allEntries.suffix(limit))
+        }
+        
+        debugLog("HeartbeatHistoryService: loadHeartbeatHistory() returning \(allEntries.count) entries")
+        return allEntries
     }
     
     /// Load heartbeat history with detailed result for UI error display
@@ -148,18 +166,45 @@ class HeartbeatHistoryService {
         debugLog("HeartbeatHistoryService: loadHeartbeatHistoryWithResult() called with limit \(limit)")
         
         do {
-            let sessionPath = try getMainSessionPath()
-        debugLog("HeartbeatHistoryService: Loading from \(sessionPath.path)")
-            let entries = parseHeartbeatsFromJSONL(at: sessionPath, limit: limit)
-        debugLog("HeartbeatHistoryService: Returning \(entries.count) entries")
-            return .success(entries)
+            let sessionPaths = try getHeartbeatSessionPaths()
+            var allEntries: [HeartbeatEntry] = []
+            for path in sessionPaths {
+                debugLog("HeartbeatHistoryService: Loading from \(path.path)")
+                let entries = parseHeartbeatsFromJSONL(at: path, limit: limit)
+                allEntries.append(contentsOf: entries)
+            }
+            
+            // Deduplicate and sort
+            allEntries.sort { $0.timestamp < $1.timestamp }
+            allEntries = deduplicateEntries(allEntries)
+            
+            if allEntries.count > limit {
+                allEntries = Array(allEntries.suffix(limit))
+            }
+            
+            debugLog("HeartbeatHistoryService: Returning \(allEntries.count) entries")
+            return .success(allEntries)
         } catch let error as HeartbeatHistoryError {
-        debugLog("HeartbeatHistoryService: Error loading history: \(error.localizedDescription)")
+            debugLog("HeartbeatHistoryService: Error loading history: \(error.localizedDescription)")
             return .failure(error)
         } catch {
-        debugLog("HeartbeatHistoryService: Unexpected error: \(error)")
+            debugLog("HeartbeatHistoryService: Unexpected error: \(error)")
             return .failure(.sessionsIndexParseError)
         }
+    }
+    
+    /// Deduplicate entries that are within 60 seconds of each other
+    private func deduplicateEntries(_ entries: [HeartbeatEntry]) -> [HeartbeatEntry] {
+        guard !entries.isEmpty else { return entries }
+        var result: [HeartbeatEntry] = [entries[0]]
+        for i in 1..<entries.count {
+            let prev = result.last!
+            let curr = entries[i]
+            if abs(curr.timestamp.timeIntervalSince(prev.timestamp)) > 60 {
+                result.append(curr)
+            }
+        }
+        return result
     }
     
     /// Load heartbeat history from a specific session JSONL file
@@ -173,7 +218,7 @@ class HeartbeatHistoryService {
         return parseHeartbeatsFromJSONL(at: sessionPath, limit: limit)
     }
     
-    /// Get the timestamp of the last heartbeat run
+    /// Get the timestamp of the last heartbeat run (checks all relevant sessions)
     func getLastHeartbeatTime() -> Date? {
         let entries = loadHeartbeatHistory(limit: 10)
         let lastTime = entries.last?.timestamp

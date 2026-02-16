@@ -75,10 +75,14 @@ class HeartbeatService {
     /// This ensures we always show the most accurate "last check" time,
     /// regardless of which data source is fresher.
     func getLastHeartbeatSent() -> Date? {
-        var sessionsJsonDate: Date?
-        var jsonlDate: Date?
+        // Primary source: JSONL parsing (actual heartbeat response timestamps)
+        // This is the source of truth — it reflects when the LLM actually responded
+        if let jsonlDate = HeartbeatHistoryService.shared.getLastHeartbeatTime() {
+            return jsonlDate
+        }
         
-        // Source 1: sessions.json lastHeartbeatSentAt
+        // Secondary fallback: sessions.json lastHeartbeatSentAt
+        // Often missing, but check it as a last resort
         let sessionsPath = URL(fileURLWithPath: AppConfiguration.shared.sessionsIndexPath)
         
         if let data = try? Data(contentsOf: sessionsPath),
@@ -93,25 +97,11 @@ class HeartbeatService {
                 latestTimestamp = timestamp
             }
             if latestTimestamp > 0 {
-                sessionsJsonDate = Date(timeIntervalSince1970: Double(latestTimestamp) / 1000.0)
+                return Date(timeIntervalSince1970: Double(latestTimestamp) / 1000.0)
             }
         }
         
-        // Source 2: JSONL parsing (actual heartbeat response timestamps)
-        jsonlDate = HeartbeatHistoryService.shared.getLastHeartbeatTime()
-        
-        // Return the MORE RECENT of the two sources
-        // This handles stale sessions.json while still using it as a fallback
-        switch (sessionsJsonDate, jsonlDate) {
-        case (nil, nil):
-            return nil
-        case (let date?, nil):
-            return date
-        case (nil, let date?):
-            return date
-        case (let date1?, let date2?):
-            return date1 > date2 ? date1 : date2
-        }
+        return nil
     }
     
     // MARK: - Status Calculation
@@ -174,7 +164,7 @@ class HeartbeatService {
         }
         
         // Get interval from config
-        let intervalMs = config.everyMs
+        let intervalMs = config.effectiveEveryMs
         let intervalMinutes = Int(intervalMs / 60_000)
         
         // Priority 3: Heartbeat disabled in config
@@ -315,7 +305,7 @@ class HeartbeatService {
         
         // Fallback heuristics for known model families
         if modelId.contains("opus-4-6") {
-            return 1_000_000
+            return 200_000
         } else if modelId.contains("claude-4") || modelId.contains("claude-3-5-sonnet") {
             return 200_000
         } else if modelId.contains("gpt-4") {
