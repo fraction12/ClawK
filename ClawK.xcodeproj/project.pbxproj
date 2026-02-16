@@ -18,20 +18,28 @@
 		2BA19F836DBF147B3FC35B75 /* EnhancedQuickStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD2613E8C530943E9D8226E /* EnhancedQuickStatsView.swift */; };
 		3277B1D4C71DEEB3C22B30C2 /* MemoryTierComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63817B78F28352C3542111EA /* MemoryTierComponents.swift */; };
 		3956E8AED9F070CB9EBDF02F /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349075132D648E33A58D885F /* ChartData.swift */; };
+		3B457DE7E22126F2844D7762 /* QuotaModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900A87457541571E442D8318 /* QuotaModelsTests.swift */; };
 		3BE19E4BC7492CC7A8F30954 /* MemoryVitalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39E3F7DD1892F9F9A5DD774 /* MemoryVitalsView.swift */; };
 		3E459B008FBFC65E242254DE /* MemoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A726926E724121DFA5CCB053 /* MemoryViewModel.swift */; };
 		3E6B8DB50BD906A5E840DEF4 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F081BECD73B4F9B928E00F71 /* WelcomeView.swift */; };
 		3E747DDFDA6CDF376730EA47 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6528D2981ABD942CA66D47D5 /* CanvasView.swift */; };
+		41932225D381480740EE7977 /* MemoryModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD80DEF8D3DBB4D5A5CB480 /* MemoryModelsTests.swift */; };
+		419E0DD0426194A5001CA791 /* HeartbeatServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CE27C5A0188A6C1AD3E4F /* HeartbeatServiceTests.swift */; };
+		42AB1935A599D1CCEE04CE9A /* CostEstimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E225518A12C5395C5473DDAF /* CostEstimatorTests.swift */; };
 		4627B89E6FE8F0A72F6A811D /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD0F6F95E97B6F10CADDD78 /* Spacing.swift */; };
 		53A0E369092271F5E111CBF1 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18202E101FA1C88B058C156E /* MainWindowView.swift */; };
+		568EC896AB3B112B1D3A5D5F /* ModelInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573726F6E4B946958A1A9BD8 /* ModelInfoTests.swift */; };
 		58D9F403DD7E0B2BF3C85DC3 /* ModelInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E43570A6A682E5BE5900C5B /* ModelInfo.swift */; };
 		58F024C28167BCCADC376981 /* QuotaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE52A9BBC9230536C2922545 /* QuotaService.swift */; };
 		5AB614427217DF8A598C763A /* GatewayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B32922ECDFB601432EBB65 /* GatewayClient.swift */; };
+		5C203FCCA389CCCA2B22EACC /* HeartbeatModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBE2AC48F017DC148B43E4B /* HeartbeatModelsTests.swift */; };
 		6359E6C6A7DB1AAC823B8EE4 /* QuotaModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B7A16BAF2A2E5A1F17EF63 /* QuotaModels.swift */; };
 		66B2E9B587727346D8FE5486 /* SessionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E60043AAB346DA76314735 /* SessionInfo.swift */; };
 		75CBF39C2C0FA0DDFB4D834C /* HeartbeatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8087B065E33F21B803A3C052 /* HeartbeatService.swift */; };
 		75E1C91C941FC58C542F871D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 412BD4F4E1018776D3008E14 /* README.md */; };
 		765212041BA93AAE1FCCCA09 /* GatewayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2844C856BB2CB85D3B369AA0 /* GatewayConfig.swift */; };
+		7CABA1CF335FFDB88A59A9F8 /* AppConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7FB3006C9189CD0DEAC920 /* AppConfigurationTests.swift */; };
+		7CEB96B3FB464FCC3F59D2CA /* DecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418F3E9DFF65FAEFA2304B55 /* DecodingTests.swift */; };
 		7FE911C2158177895A07157B /* QuickActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE7EE7DEEF57EF8C451C13A /* QuickActionsView.swift */; };
 		806C2ACFF0B99D6AFD7A336D /* ClawKStatusCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6A8C34909723CB8499F7BC /* ClawKStatusCard.swift */; };
 		80F95891DD4ABA4E0D2298F5 /* MemoryNotConfiguredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10EDF419173CBBA852681653 /* MemoryNotConfiguredView.swift */; };
@@ -46,6 +54,7 @@
 		B8ED2BEC1519C0C7D48F5D6D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA66A021FC5A6DAB5E8A7AD7 /* AppState.swift */; };
 		BDFF5C2FBE7B3BCECDB94634 /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1989BD6BB2D4048FF80817AC /* MenuBarManager.swift */; };
 		C054BA79C88E8AA7D5C03BD0 /* MemoryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9435020B9D973B0B6C17C11 /* MemoryModels.swift */; };
+		CE3431BC8EFAA92149B4B259 /* SessionInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C2267FA66FFC6B8E955FE3 /* SessionInfoTests.swift */; };
 		D531D586F1B6F62A54E3E930 /* MemoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C683FF4B4A33DFC61FDBAFCD /* MemoryService.swift */; };
 		D53C70B8B538563666309114 /* DSSkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC71EABBF1FDA5BC5A083755 /* DSSkeleton.swift */; };
 		D8F6EFBC6CE89D2207F0DEB2 /* DSEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD181A06C8B83158184DB17 /* DSEmptyState.swift */; };
@@ -54,11 +63,24 @@
 		E6C57279AD45877087646A01 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAD3F997504926D928CDCCE /* AppConfiguration.swift */; };
 		E9D99EC6CB118C5FE42A9289 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96D108FD3D30434669D188E /* SettingsView.swift */; };
 		EC8AE7519E7CF8115DCEBC06 /* SendMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B63A56938BF06AE92DA68E /* SendMessageView.swift */; };
+		EEE7ADD79A0E260472BC6E2C /* ChartDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2A2806250514340A6E12D7 /* ChartDataTests.swift */; };
 		F2BDE4EBFFA49BF61BA2AA72 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF2A17C38A78D752FE0E1DB /* Colors.swift */; };
 		F44AD3994FD5DD97466E7F19 /* CustomHeartbeatChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C6A0FB3415F3AAA147BCF7 /* CustomHeartbeatChart.swift */; };
+		F7F033EF45C0F91E04C7CA95 /* CronJobTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9091CFEC7DB799BBFBB063AF /* CronJobTests.swift */; };
+		F8396214565DE55CD7C34283 /* GatewayConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6F839E7D38ACF182919FDA /* GatewayConfigTests.swift */; };
 		FA93AEA1A2785346D9F8BC46 /* CronJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD1351D90BA2079310250 /* CronJob.swift */; };
 		FD2818E1C51A1EA3D218057B /* DSRefreshButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96269C2CFC14848B9F9ED3 /* DSRefreshButton.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EF62782241E5CBACD2890988 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21DE901194AC514809DD0916 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1C37CBE719AC8DA08EF50397;
+			remoteInfo = ClawK;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0CD905418699DE2EC689998B /* ClawKApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClawKApp.swift; sourceTree = "<group>"; };
@@ -77,17 +99,28 @@
 		349075132D648E33A58D885F /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		3888FBAED5CBA80B725DC448 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		3AE7EE7DEEF57EF8C451C13A /* QuickActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionsView.swift; sourceTree = "<group>"; };
+		3D7FB3006C9189CD0DEAC920 /* AppConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationTests.swift; sourceTree = "<group>"; };
+		3F3CE27C5A0188A6C1AD3E4F /* HeartbeatServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatServiceTests.swift; sourceTree = "<group>"; };
+		3FD80DEF8D3DBB4D5A5CB480 /* MemoryModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryModelsTests.swift; sourceTree = "<group>"; };
 		4007CF70683CA3A0D1BA51A5 /* ClawK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClawK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		412BD4F4E1018776D3008E14 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		418F3E9DFF65FAEFA2304B55 /* DecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingTests.swift; sourceTree = "<group>"; };
+		42C2267FA66FFC6B8E955FE3 /* SessionInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionInfoTests.swift; sourceTree = "<group>"; };
 		4FAD3F997504926D928CDCCE /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		573726F6E4B946958A1A9BD8 /* ModelInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInfoTests.swift; sourceTree = "<group>"; };
 		5C8088A3C5DB7A5048C02C16 /* Memory3DVisualizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memory3DVisualizationView.swift; sourceTree = "<group>"; };
+		5DBE2AC48F017DC148B43E4B /* HeartbeatModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatModelsTests.swift; sourceTree = "<group>"; };
 		63817B78F28352C3542111EA /* MemoryTierComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTierComponents.swift; sourceTree = "<group>"; };
 		6528D2981ABD942CA66D47D5 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		6A6F839E7D38ACF182919FDA /* GatewayConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatewayConfigTests.swift; sourceTree = "<group>"; };
 		6CD0F6F95E97B6F10CADDD78 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		70B63A56938BF06AE92DA68E /* SendMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageView.swift; sourceTree = "<group>"; };
 		79E2DCBBFE6A43D359343042 /* MemoryBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrowserView.swift; sourceTree = "<group>"; };
+		7CA2BDA425D390E08376272E /* ClawKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClawKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8087B065E33F21B803A3C052 /* HeartbeatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatService.swift; sourceTree = "<group>"; };
 		8CD436ACA8346EB670629B1E /* MemoryFilePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryFilePreviewView.swift; sourceTree = "<group>"; };
+		900A87457541571E442D8318 /* QuotaModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaModelsTests.swift; sourceTree = "<group>"; };
+		9091CFEC7DB799BBFBB063AF /* CronJobTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CronJobTests.swift; sourceTree = "<group>"; };
 		94BDD1351D90BA2079310250 /* CronJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CronJob.swift; sourceTree = "<group>"; };
 		95C6A0FB3415F3AAA147BCF7 /* CustomHeartbeatChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeartbeatChart.swift; sourceTree = "<group>"; };
 		967B1E7E51BF2848897EDCC9 /* MissionControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlView.swift; sourceTree = "<group>"; };
@@ -106,8 +139,10 @@
 		D35DFE9351AA7BE1933E4C2B /* CostEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostEstimator.swift; sourceTree = "<group>"; };
 		D96D108FD3D30434669D188E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DD96269C2CFC14848B9F9ED3 /* DSRefreshButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSRefreshButton.swift; sourceTree = "<group>"; };
+		DE2A2806250514340A6E12D7 /* ChartDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataTests.swift; sourceTree = "<group>"; };
 		DE52A9BBC9230536C2922545 /* QuotaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaService.swift; sourceTree = "<group>"; };
 		E1B7A16BAF2A2E5A1F17EF63 /* QuotaModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotaModels.swift; sourceTree = "<group>"; };
+		E225518A12C5395C5473DDAF /* CostEstimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostEstimatorTests.swift; sourceTree = "<group>"; };
 		E43AF8ECC4BD0BF9BDD969F1 /* MemorySearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySearchResultsView.swift; sourceTree = "<group>"; };
 		EBD181A06C8B83158184DB17 /* DSEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEmptyState.swift; sourceTree = "<group>"; };
 		F081BECD73B4F9B928E00F71 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -120,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				DEF37A025EA6D33321ACA5CE /* ClawK */,
+				8F91C0DF0AB9793A15EEB273 /* ClawKTests */,
 				2E8E383D35281A1CCA1DCF9A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -137,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				4007CF70683CA3A0D1BA51A5 /* ClawK.app */,
+				7CA2BDA425D390E08376272E /* ClawKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -182,19 +219,42 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		7BE5D45AB931EBA8865601EA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E225518A12C5395C5473DDAF /* CostEstimatorTests.swift */,
+				9091CFEC7DB799BBFBB063AF /* CronJobTests.swift */,
+				5DBE2AC48F017DC148B43E4B /* HeartbeatModelsTests.swift */,
+				3FD80DEF8D3DBB4D5A5CB480 /* MemoryModelsTests.swift */,
+				573726F6E4B946958A1A9BD8 /* ModelInfoTests.swift */,
+				900A87457541571E442D8318 /* QuotaModelsTests.swift */,
+				42C2267FA66FFC6B8E955FE3 /* SessionInfoTests.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7F38D5FB0D5430943B2D8B9E /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				DE2A2806250514340A6E12D7 /* ChartDataTests.swift */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		7F7193AFE10048BEFF74ABAA /* Decoding */ = {
+			isa = PBXGroup;
+			children = (
+				418F3E9DFF65FAEFA2304B55 /* DecodingTests.swift */,
+			);
+			path = Decoding;
+			sourceTree = "<group>";
+		};
 		86BBD6EAD254DD49B12C96EE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				A726926E724121DFA5CCB053 /* MemoryViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		885F1B42422536B2AC742C76 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		8CBD55EF3C82DF5FA99C4E80 /* Components */ = {
@@ -209,6 +269,17 @@
 				2B64F217E6157EA8B1371A8D /* DSStatusBadge.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		8F91C0DF0AB9793A15EEB273 /* ClawKTests */ = {
+			isa = PBXGroup;
+			children = (
+				7F38D5FB0D5430943B2D8B9E /* Charts */,
+				7F7193AFE10048BEFF74ABAA /* Decoding */,
+				7BE5D45AB931EBA8865601EA /* Models */,
+				EC4E0814A2E628ABEF8347F2 /* Services */,
+			);
+			path = ClawKTests;
 			sourceTree = "<group>";
 		};
 		9217352333E615E9A50F29B0 /* Models */ = {
@@ -245,7 +316,6 @@
 				4042032AB85E73D81E7D80E3 /* DesignSystem */,
 				29A0EF4B42BF42F66646D45B /* MenuBar */,
 				9217352333E615E9A50F29B0 /* Models */,
-				885F1B42422536B2AC742C76 /* Resources */,
 				C444984727C3589D1DDFE648 /* Services */,
 				86BBD6EAD254DD49B12C96EE /* ViewModels */,
 				6540727AA7D377FB755CB19F /* Views */,
@@ -254,6 +324,16 @@
 				0CD905418699DE2EC689998B /* ClawKApp.swift */,
 			);
 			path = ClawK;
+			sourceTree = "<group>";
+		};
+		EC4E0814A2E628ABEF8347F2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3D7FB3006C9189CD0DEAC920 /* AppConfigurationTests.swift */,
+				6A6F839E7D38ACF182919FDA /* GatewayConfigTests.swift */,
+				3F3CE27C5A0188A6C1AD3E4F /* HeartbeatServiceTests.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		FC45B0F0E0200CA28F1C9E0A /* Memory */ = {
@@ -291,6 +371,24 @@
 			productReference = 4007CF70683CA3A0D1BA51A5 /* ClawK.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F29E9F0743E9F989B866F188 /* ClawKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E3B76321BC970432A7F2588E /* Build configuration list for PBXNativeTarget "ClawKTests" */;
+			buildPhases = (
+				75805DCAC09341213004CE60 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF3456F22CCE4FED5CEF5D66 /* PBXTargetDependency */,
+			);
+			name = ClawKTests;
+			packageProductDependencies = (
+			);
+			productName = ClawKTests;
+			productReference = 7CA2BDA425D390E08376272E /* ClawKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -303,6 +401,9 @@
 					1C37CBE719AC8DA08EF50397 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
+					};
+					F29E9F0743E9F989B866F188 = {
+						DevelopmentTeam = "";
 					};
 				};
 			};
@@ -321,6 +422,7 @@
 			projectRoot = "";
 			targets = (
 				1C37CBE719AC8DA08EF50397 /* ClawK */,
+				F29E9F0743E9F989B866F188 /* ClawKTests */,
 			);
 		};
 /* End PBXProject section */
@@ -394,7 +496,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		75805DCAC09341213004CE60 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CABA1CF335FFDB88A59A9F8 /* AppConfigurationTests.swift in Sources */,
+				EEE7ADD79A0E260472BC6E2C /* ChartDataTests.swift in Sources */,
+				42AB1935A599D1CCEE04CE9A /* CostEstimatorTests.swift in Sources */,
+				F7F033EF45C0F91E04C7CA95 /* CronJobTests.swift in Sources */,
+				7CEB96B3FB464FCC3F59D2CA /* DecodingTests.swift in Sources */,
+				F8396214565DE55CD7C34283 /* GatewayConfigTests.swift in Sources */,
+				5C203FCCA389CCCA2B22EACC /* HeartbeatModelsTests.swift in Sources */,
+				419E0DD0426194A5001CA791 /* HeartbeatServiceTests.swift in Sources */,
+				41932225D381480740EE7977 /* MemoryModelsTests.swift in Sources */,
+				568EC896AB3B112B1D3A5D5F /* ModelInfoTests.swift in Sources */,
+				3B457DE7E22126F2844D7762 /* QuotaModelsTests.swift in Sources */,
+				CE3431BC8EFAA92149B4B259 /* SessionInfoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CF3456F22CCE4FED5CEF5D66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1C37CBE719AC8DA08EF50397 /* ClawK */;
+			targetProxy = EF62782241E5CBACD2890988 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		505CAD319813CB8BBAD02DBC /* Release */ = {
@@ -457,6 +586,23 @@
 			};
 			name = Release;
 		};
+		597D423147907001E964762F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ClawK.app/Contents/MacOS/ClawK";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.openclaw.ClawKTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
 		5B0A441D18AD3DAD7B28A4CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -490,6 +636,23 @@
 				SDKROOT = macosx;
 			};
 			name = Release;
+		};
+		8489AE82D69A02EE14E68516 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ClawK.app/Contents/MacOS/ClawK";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.openclaw.ClawKTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
 		};
 		F8F75548C238F19213A86A2C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -575,6 +738,15 @@
 			buildConfigurations = (
 				5B0A441D18AD3DAD7B28A4CA /* Debug */,
 				64231ADB853F2039E09210C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E3B76321BC970432A7F2588E /* Build configuration list for PBXNativeTarget "ClawKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8489AE82D69A02EE14E68516 /* Debug */,
+				597D423147907001E964762F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

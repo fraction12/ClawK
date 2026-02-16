@@ -39,11 +39,29 @@ targets:
     entitlements:
       path: ClawK/ClawK.entitlements
 
+  ClawKTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: ClawKTests
+    dependencies:
+      - target: ClawK
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: "$(BUILT_PRODUCTS_DIR)/ClawK.app/Contents/MacOS/ClawK"
+        TEST_HOST: "$(BUNDLE_LOADER)"
+
 schemes:
   ClawK:
     build:
       targets:
         ClawK: all
+        ClawKTests: [test]
+    test:
+      config: Debug
+      targets:
+        - ClawKTests
     run:
       config: Debug
     profile:

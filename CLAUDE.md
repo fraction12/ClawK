@@ -59,7 +59,7 @@ ClawK/
 - `GatewayClient.runOpenClawCommand()` searches multiple paths for the `openclaw` binary (`/opt/homebrew/bin`, `/usr/local/bin`, `/usr/bin`)
 - The app hides its dock icon (`NSApp.setActivationPolicy(.accessory)`) — all UI is via menu bar
 - Build config: `SWIFT_STRICT_CONCURRENCY: minimal` — don't add `Sendable` conformances unless needed
-- No tests exist currently (test directory is empty)
+- Tests: 212 XCTests in `ClawKTests/` covering models, services, charts, and decoding. Run with `xcodebuild -scheme ClawK -configuration Debug test`
 - project.yml is the source of truth for build config — don't edit .xcodeproj directly
 
 ## Build Config
